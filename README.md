@@ -1,4 +1,4 @@
-﻿
+﻿# kslite
 
 CommonJS的主要目标是让JS在各种环境下都能运行,这不是kslite的目标
 此外CommonJS的Modules促进各处的开发能够快速互通共用,这个才是kslite的目标.
@@ -15,6 +15,7 @@ CommonJS的主要目标是让JS在各种环境下都能运行,这不是kslite的
 
 下面是最常被提起的用例:
 
+```js
 //	test/math.js
 KSLITE.declare([], function(require, exports){
     exports.add = function(a, b){
@@ -22,7 +23,7 @@ KSLITE.declare([], function(require, exports){
     };
 });
 //	test/increment.js
-KSLITE.declare(['test-math'], function(require, exports){	
+KSLITE.declare(['test-math'], function(require, exports){
 	var add = require('test-math').add;
     exports.increment = function(a){
         return add(a,1);
@@ -31,17 +32,19 @@ KSLITE.declare(['test-math'], function(require, exports){
 //	test/program.js
 KSLITE.declare(["test-increment"], function(require, exports){
     var inc = require("test-increment").increment;
-	exports.result = inc(1); 
+	exports.result = inc(1);
 });
 //	调用
 KSLITE.provide(["test-program"], function(require){
 alert(require("test-program").result);
 });
+```
 
 属性add/use模式可以这样理解,declare为add,provide为use.区别是:
-1.	之前add/use的回调函数,传入的S实例,被替换成require方法.需要使用哪个依赖模块就require哪个.
-2.	Declare的fn的产出应该被挂载在exports对象里(注意exports不能被重新赋值),而exports为fn被调用时的第二个参数.
-3.	另外如果使用kslite内置的substitute,extend等方法,需要这样写: require(“kslite”).extend.目前”kslite”被设置为内置模块,任何provide可以不声明依赖直接使用.
+
+1. 之前add/use的回调函数,传入的S实例,被替换成require方法.需要使用哪个依赖模块就require哪个.
+2. Declare的fn的产出应该被挂载在exports对象里(注意exports不能被重新赋值),而exports为fn被调用时的第二个参数.
+3. 另外如果使用kslite内置的substitute,extend等方法,需要这样写: require(“kslite”).extend.目前”kslite”被设置为内置模块,任何provide可以不声明依赖直接使用.
 
 可以看到通过exports+require模式,隐去了模块间对S实例的贡献访问,避免了冲突的可能.
 但是看起来经过这样的改动,模块越来越像类,模块支持只不过是面向JS这种非阻塞语言实现类似java的import的功能,仅此而已.
@@ -68,7 +71,8 @@ Kslite暂时没有这么做,因为这样做同样不利于debug.所以需要大�
 到时候就是kslite这几百行代码谢幕的时刻,而我们开发的其他内容都不会被浪费.
 
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>
+-------
+
 kslite为kissy的仅支持有限方法的子集:
 这些方法包括log,mix,clone,extend,add,use,getScript,substitute
 kslite为所在页面引入KSLITE全局对象.
@@ -79,17 +83,22 @@ add:任何时候只add,不attach.
 use:不用add即可直接use,详见下面的包和模块管理.
 
 包和模块管理:
-模块名由包名,路径,文件名.三部分构成 
+模块名由包名,路径,文件名.三部分构成
 如{packagename}-{path_0}-...-{path_n}-{filename}
 包类似*.jar,每个包对应一个codebase即classesroot.在S.config.lt_pkgs中配置
 是一个http地址,如果没有则以为kslite所在地址为base.
 比如:
-	S.Config.lt_pkgs={
-		inf:"http://a.alimama.cn/kslite/",
-		test:"http://demo.taobao.com/tbad/kslite"
-	}
-	模块"inf-a"对应地址 http://a.alimama.cn/kslite/inf/a.js
-	模块"test-t-1"对应地址 http://demo.taobao.com/tbad/kslite/test/t/1.js
+
+```js
+S.Config.lt_pkgs={
+	inf:"http://a.alimama.cn/kslite/",
+	test:"http://demo.taobao.com/tbad/kslite"
+}
+```
+
+模块"inf-a"对应地址 http://a.alimama.cn/kslite/inf/a.js
+模块"test-t-1"对应地址 http://demo.taobao.com/tbad/kslite/test/t/1.js
+
 这样根据模块名称即可定位模块地址,所以不需要add预先注册模块即可直接use.
 add不执行attach.只有第一次use的时候才执行attach.
 add同样支持require.可以在载入js后根据require串行加载更多模块.已处理循环引用问题,办法很土.
