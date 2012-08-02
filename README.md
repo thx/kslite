@@ -38,7 +38,7 @@ KSLITE.declare(["test-increment"], function(require, exports){
 });
 //  调用
 KSLITE.provide(["test-program"], function(require){
-alert(require("test-program").result);
+    alert(require("test-program").result);
 });
 ```
 
