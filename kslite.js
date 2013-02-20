@@ -23,7 +23,11 @@
     var kslite_onload = win.KSLITEonLoad, kslite_pkgpaths = win.KSLITEpkgPaths;
     if (win[S] === undefined) {
         win[S] = {};
+    } else {
+        KSLITE.Config.lt_pkgs = KSLITE.mix(kslite_config.lt_pkgs, KSLITE.Config.lt_pkgs);
+        return;
     }
+
     S = win[S];
     var doc = win.document;
     var toString = Object.prototype.toString;
@@ -507,7 +511,10 @@
             }
         },
         path: function(s, callback){
-            var pa = s.split("-"), pkgname = pa[0], packages = kslite_config.lt_pkgs;
+            var pa = s.split("-"),
+                pkgname = pa[0], 
+                packages = S.Config.lt_pkgs;
+
             if (S.iS(packages[pkgname])) {
                 callback(packages[pkgname] + pa.join("/"));
             }
