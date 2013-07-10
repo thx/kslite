@@ -40,12 +40,33 @@ module.exports = function(grunt) {
             }
         },
 
+        checksize: {
+            files: 'dist/kslite-min.js'
+        },
+
         watch: {
             files: ['<%= jshint.all.src %>'],
-            tasks: ['jshint', 'copy', 'uglify']
+            tasks: ['jshint', 'copy', 'uglify', 'checksize']
         }
 
     });
+
+    grunt.registerMultiTask('checksize', 'check the minisize kslite size', function() {
+        var done = this.async();
+        var files = this.filesSrc;
+
+        fs.stat(files[0], function(err, info) {
+            grunt.log.writeln('current size is : ' + info.size / 1024);
+            if (info.size / 1024 > 5) {
+                grunt.log.error('The minify kslite must lite then 5k.');
+                done(false);
+            } else {
+                done(true);
+            }
+        });
+
+    });
+
 
 
     grunt.loadNpmTasks('grunt-contrib-watch');

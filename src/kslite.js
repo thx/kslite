@@ -3,9 +3,7 @@
  * KSLITE -- KISSY的子集,通过精简过的有限的方法,提供模块管理,OO支持等基本功能
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
- */
-
-(function(win, S, undefined) {
+ */ (function(win, S, undefined) {
     var kslite_config = {
         "lt_pkgs": {}, //定义包
         "lt_v": "{version}",
@@ -16,7 +14,8 @@
 
     //KSLITE没有定义的时候
     if (win[S] === undefined) {
-        win[S] = {};
+        //S重置为对象
+        S = win[S] = {};
     } else {
         //已经定义的时候，把当前设置的pkgs加到已经存在的kslite上
         KSLITE.Config.lt_pkgs = KSLITE.mix(kslite_config.lt_pkgs, KSLITE.Config.lt_pkgs);
@@ -27,18 +26,25 @@
     var kslite_onload = win.KSLITEonLoad,
         kslite_pkgpaths = win.KSLITEpkgPaths;
 
-    //S重置为对象
-    S = win[S];
     //快捷对象
     var doc = win.document;
     var toString = Object.prototype.toString;
 
+    var isType = function(type) {
+        return function(o) {
+            return toString.call(o) === '[object ' + type + ']';
+        };
+    };
 
-    //mix方法
-    //r 被添加对象的目标
-    //s 添加对象的来源
-    //ov 强制, 默认为true 
-    //wl 指定只复制s中特定几个key, 数组
+    /**
+     * Copies all the properties of s to r.
+     * @method mix
+     * @param r {Object} 目标对象
+     * @param s {Object} 源对象
+     * @param ov {Boolean} 是否强制覆盖
+     * @param wl {Array} 如果存在白名单,只覆盖白名单内的对象.
+     * @return {Object} the augmented object
+     */
     var mix = function(r, s, ov, wl) {
         if (!s || !r) {
             return r;
@@ -67,42 +73,49 @@
     };
 
     //快捷方法，准备插入元素的节点 
-    var head = doc.getElementsByTagName('head')[0] || doc.documentElement;
+    var gbt = 'getElementsByTagName'; //字符串暂存,方便压缩
+    var head = doc[gbt]('head')[0] || doc.documentElement;
 
     //定义几个模块的状态
-    var INIT = 0,
-        LOADING = 1,
-        LOADED = 2,
-        ERROR = 3,
-        ATTACHED = 4,
-        RE_CSS = /\.css(?:\?|$)/i;
+    var INIT = 0;
+    var LOADING = 1;
+    var LOADED = 2;
+    var ERROR = 3;
+    var ATTACHED = 4;
+    var RE_CSS = /\.css(?:\?|$)/i;
 
     //脚本加载的回调函数， IE下处理readyState，需要同时处理loaded和complete两种状态
-    var scriptOnload = doc.createElement('script').readyState ? function(node, callback) {
-            //暂存原有的回调
-            var oldCallback = node.onreadystatechange;
-            node.onreadystatechange = function() {
-                var rs = node.readyState;
-                if (rs === 'loaded' || rs === 'complete') {
-                    node.onreadystatechange = null;
-                    if (oldCallback) {
-                        oldCallback();
-                    }
-                    callback.call(this);
-                }
-            };
-        } : function(node, callback) {
-            node.addEventListener('load', callback, false);
-            node.addEventListener('error', callback, false);
+    var scriptOnload = function(node, callback) {
+        var re = /^(?:loaded|complete|undefined)$/;
+        /*
+        var oldrc = node.onreadystatechange;
+        var oldload = node.onload;
+        var olderr = node.onerror;
+        */
+        node.onreadystatechange = node.onload = node.onerror = function() {
+            if (re.test(node.readyState)) {
+                node.onload = node.onerror = node.onreadystatechange = null;
+                //node = null;
+
+                callback();
+                /*
+                if (oldrc) oldrc();
+                if (oldload) oldload();
+                if (olderr) olderr();
+                */
+            }
         };
+    };
+
 
     //获取第一个可以交互的脚本
     //IE only
+
     function getInteractiveScript() {
         if (navigator.userAgent.indexOf("MSIE") < 0) {
             return null;
         }
-        var scripts = head.getElementsByTagName('script');
+        var scripts = head[gbt]('script');
         var script, i = 0,
             len = scripts.length;
         for (; i < len; i++) {
@@ -116,28 +129,23 @@
 
     //添加kslite方法
     mix(S, {
-        /**
-         * The version of the library.
-         * @property version
-         * @type {String}
-         */
         //kslite的版本号
         version: kslite_config.lt_v,
         _init: function() {
-            var x, currentScript, scripts = doc.getElementsByTagName('script');
+            var x, currentScript, scripts = doc[gbt]('script');
             //试图通过script上的kslite属性来找到当前kslite使用的脚本
             //这需要在script标签上写kslite属性
-            if (!window.KSLITEcurrentScript) {
+            if (!win.KSLITEcurrentScript) {
                 for (x = 0; x < scripts.length; x++) {
                     if (scripts[x].kslite) {
-                        window.KSLITEcurrentScript = scripts[x];
+                        win.KSLITEcurrentScript = scripts[x];
                         break;
                     }
                 }
             }
             //Fix 这里取到的base可能会有问题
-            currentScript = window.KSLITEcurrentScript || scripts[scripts.length - 1];
-            window.KSLITEcurrentScript = currentScript;
+            currentScript = win.KSLITEcurrentScript || scripts[scripts.length - 1];
+            win.KSLITEcurrentScript = currentScript;
 
             var base = (currentScript.src).split("/").slice(0, -1).join("/") + "/";
 
@@ -156,6 +164,7 @@
                 debug: false,
                 base: base,
                 timeout: 10,
+                charset: 'gbk',
                 kslite: kslite_config
             };
             S.mix(S.Config, kslite_config);
@@ -224,15 +233,6 @@
                 }
             }
         },
-        /**
-         * Copies all the properties of s to r.
-         * @method mix
-         * @param r {Object} 目标对象
-         * @param s {Object} 源对象
-         * @param ov {Boolean} 是否强制覆盖
-         * @param wl {Array} 如果存在白名单,只覆盖白名单内的对象.
-         * @return {Object} the augmented object
-         */
         //存一下快捷方式
         mix: mix,
         /**
@@ -241,15 +241,11 @@
          * @param msg {String} the message to log.
          * @param cat {String} the log category for the message. Default
          *        categories are "info", "warn", "error", "time" etc.
-         * @param src {String} the source of the the message (opt)
          * @return {KSLITE}
          */
-        //如果是debug开启 
-        log: function(msg, cat, src) {
-            if (S.Config.debug) {
-                if (win.console !== undefined && console.log) {
-                    console[cat && console[cat] ? cat : 'log'](msg);
-                }
+        log: function(msg, cat) {
+            if (S.Config.debug && win.console && console.log) {
+                console[cat && console[cat] ? cat : 'log'](msg);
             }
             return S;
         },
@@ -356,74 +352,80 @@
          * @param success {Function|Object} 回调函数
          * @param charset {String} 字符串
          */
-        //获取一个脚本,这里也可以是一个Css文件
-        //url  路径 
-        //success 成功后的处理对象, 接收对象或者函数
-        //charset  字符集
-        //expando  节点上扩展的属性 
         getScript: function(url, success, charset, expando) {
             var isCSS = RE_CSS.test(url),
                 node = doc.createElement(isCSS ? 'link' : 'script');
             var config = success,
                 error, timeout, timer, k;
+
             if (S.iPO(config)) {
                 success = config.success;
                 error = config.error;
                 timeout = config.timeout;
                 charset = config.charset;
+                if (!expando) {
+                    expando = config.expando;
+                }
             }
-            if (isCSS) {
-                node.href = url;
-                node.rel = 'stylesheet';
-            } else {
-                node.src = url;
-                node.async = true;
-            }
+
             if (charset) {
                 node.charset = charset;
             }
+
             if (expando) {
                 for (k in expando) {
                     node.setAttribute(k, expando[k]);
                 }
             }
+
             if (S.iF(success)) {
                 if (isCSS) {
                     success.call(node);
                 } else {
                     scriptOnload(node, function() {
                         if (timer) {
-                            timer.cancel();
+                            clearTimeout(timer);
                             timer = undefined;
                         }
                         success.call(node);
                     });
                 }
             }
+
             if (S.iF(error)) {
                 timer = setTimeout(function() {
                     timer = undefined;
                     error();
                 }, (timeout || S.Config.timeout) * 1000);
             }
+
+            if (isCSS) {
+                node.rel = 'stylesheet';
+                node.href = url;
+            } else {
+                node.async = true;
+                node.src = url;
+            }
+
             head.insertBefore(node, head.firstChild);
             return node;
         },
+
         //工具函数 是否为函数
-        iF: function(o) {
-            return toString.call(o) === '[object Function]';
-        },
+        iF: isType('Function'),
+
         //工具函数 是否为数组
-        iA: function(o) {
-            return toString.call(o) === '[object Array]';
-        },
+        iA: isType('Array'),
+
         //工具函数 是否为字符串
-        iS: function(o) {
-            return toString.call(o) === '[object String]';
-        },
+        iS: isType('String'),
+
+        //工具函数 是否为对象
+        iO: isType('Object'),
+
         //是否为纯对象, 排除dom节点及window
         iPO: function(o) {
-            return o && toString.call(o) === '[object Object]' && !o.nodeType && !o.setInterval;
+            return o && S.iO(o) && !o.nodeType && !o.setInterval;
         },
         /**
          * Add a module.<br/>
@@ -622,12 +624,13 @@
 
             if (S.iS(packages[pkgname])) {
                 callback(packages[pkgname] + pa.join("/"));
-            } else {
+            }
+            /*} else {
                 KSLITE.provide(["packages-router"], function(require) {
                     var pr = require("packages-router");
                     callback((pr[pkgname] || S.Config.base) + pa.join("/"));
                 });
-            }
+            }*/
         },
         _gPath: function(mod, fn) {
             S.path(mod.name, function(p) {
@@ -670,6 +673,7 @@
             }
 
         },
+
         _ns: function(names) {
             var i, namesArr = names.split("-"),
                 o = S.Env.fns;

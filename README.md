@@ -60,33 +60,109 @@ KSLITE.provide(["test-program"], function(require){
 ##开放接口
 所有方法绑定在全局变量KSLITE上
 
-###declare(module, callback) 
+###declare([module][,depenArry,] factory) 
+定义一个模块
 
 ###provide(module, callback) 
+使用模块
 
 ###path(module, callback) 
 
-###log()
+###log( msg [,cat] )
+msg : String
+将要显示的信息
+cat : String 
+信息的类别，默认是log
 
-###getScript
+###getScript( url[,success][,charset][, expando] )
+获取一个脚本
 
-###substitute
+url : String
+脚本路径
 
-###clone
+success : Function
+成功的回调函数
 
-###mix
+charset : String
+字符集, 如果不设，默认与config里的一致
 
+expando : Object
+额外添加的属性的键值对
+
+###getScript( url[,attrs])  return Node
+url : String
+脚本路径
+
+attrs : Object
+{
+  charset: String,
+  success: Function,
+  error: Function,
+  timeout: Number,
+  expando: Object
+}
+各属性同上
+
+###substitute(str,o[, regexp][, multiSubstitute]) return String
+简易模板函数
+str : String
+模板字符串
+
+o   : Object
+数据源
+
+regexp : String 
+用于替换的正则, 默认为/\\?\{([^{}]+)\}/g
+
+multiSubstitute : Boolean
+是否多次替换，默认为true
+
+```
+//示例
+var tmpl = "iam {a}, heis{b}";
+var tmpl1 = "iam {{a}}, heis{{b}}";
+var data = {
+    a: 123,
+    b: 234
+};
+
+KSLITE.log( KSLITE.substitute(tmpl, data) )  //return "iam 123, heis234"
+KSLITE.log( KSLITE.substitute(tmpl1, data, /\{\{([^}])\}\}/g)) //return "iam 123, heis234"
+```
+
+###clone(obj)  return Object
+obj : Object
+被克隆的源
+
+###mix(r, s[,ov][, wl]) return Object
+复制源对象上的键值到目标对象上
+
+r : Object
+目标对象
+
+s : Object
+源对象
+
+ov : Boolean
+是否强制覆盖
+
+wl :  Array
+如果存在白名单,只覆盖白名单内的对象.
 ###multiAsync
 
 ###extend
 
-###iA(obj)
+###iA(obj)  return Boolean
+判断是不是数组
 
-###iF(obj)
+###iF(obj) return Boolean
+判断是不是函数
 
-###iPO(obj)
+###iPO(obj) return Boolean
+判断是不是一个纯对象，节点和window排除
 
-###iS(obj)
+###iS(obj) return Boolean
+判断是不是一个字符串
 
 ## 配置项：
 kslite 相关配置项，在局部变量 kslite_config 中，之后 mix 入 S.Config
