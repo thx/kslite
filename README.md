@@ -23,7 +23,10 @@ add 不执行 attach。只有第一次 use 的时候才执行 attach。
 add 同样支持 require。可以在载入 js 后根据 require 串行加载更多模块。已处理循环引用问题，办法很土。
 暂时不支持 use 外部 JS 文件，如 `use("jquery.js")`;
 
-##使用方法
+## 一些说明
+文件使用utf-8编码, 在合并到别的工程的时候手工编码转换
+
+## 使用方法
 ```js
 // 文件及路径, test包下的math模块, 以下类似
 //test/math.js 
