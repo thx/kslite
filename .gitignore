@@ -1,4 +1,12 @@
-.project
+node_modules
+publish*
+publish/*
+build/*
 .DS_Store
-.svn
-.node_modules
+alimama.iml
+.idea
+build.sh
+*.jsg
+*/*.jsg
+*/*.swp
+*/local.json
