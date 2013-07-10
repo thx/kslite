@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>kslite commonjs test</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            KSLITEonLoad = window.KSLITEonLoad || [];
+            KSLITEonLoad.push(function(){
+                KSLITE.log("ksonload");
+                KSLITE.provide(["test-1_1_1"], function(require){
+                    var kslite = require("kslite");
+					kslite.path("a-b-c",function(s){
+						alert(s);
+						kslite.getScript(s+".css");
+					});                    
+                });
+            });
+        </script>
+        <script type="text/javascript">
+            KSLITEpkgPaths = window.KSLITEpkgPaths || [];
+            KSLITEpkgPaths.push("test@../");
+        </script>
+        <script type="text/javascript">
+            KSLITEdebug = true;
+        </script>
+        <script type="text/javascript">
+            KSLITEtimestamp = "20111111";
+        </script>
+        <script type="text/javascript" src="../kslite.js">
+        </script>
+        <script type="text/javascript">
+        </script>
+    </body>
+</html>

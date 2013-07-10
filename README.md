@@ -45,7 +45,7 @@ KSLITE.declare(['test-math'], function(require, exports){
 //  test/program.js
 KSLITE.declare(["test-increment"], function(require, exports){
     var inc = require("test-increment").increment;
-    exports.result = inc(1);
+   exports.result = inc(1);
 });
 
 //  调用

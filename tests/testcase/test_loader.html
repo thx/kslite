@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>kslite common test</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="../kslite.js">
+        </script>
+        <script type="text/javascript">
+            var T = {};
+            KSLITE.log = KSLITE.log ||
+            function(msg, cat, src){
+                if (KSLITE.Config.debug) {
+                    if (window.console !== undefined && console.log) {
+                        console[cat && console[cat] ? cat : 'log'](msg);
+                    }
+                }
+            };
+        </script>
+        <script type="text/javascript">
+            //简单情况
+            T["simple"] = function(){
+                KSLITE.provide(["test-0"], function(require){
+                    KSLITE.log("t0 use success!");
+                });
+            };
+            //没有requires的2个模块
+            T["2mods"] = function(){
+                KSLITE.use("test-1_2,test-1_3", function(S){
+                    S.log("t1 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            // 有 requires 的一个模块
+            T["require"] = function(){
+                KSLITE.use('test-1_1', function(S){
+                    S.log("t2 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            // 多重 requires 的一个模块
+            T["mtReqs"] = function(){
+                KSLITE.use('test-1', function(S){
+                    S.log("t3 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            
+            // 多重 requires的多个模块
+            T["mtReqs+2mod"] = function(){
+                KSLITE.use('test-2,test-1', function(S){
+                    S.log("t4 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            
+            // 去重测试            
+            T["mergeReq"] = function(){
+                KSLITE.use('test-1_2,test-1_2', function(S){
+                    S.log("t5 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            // 依赖去重
+            T["mergeRelies"] = function(){
+                KSLITE.use('test-1_1_2,test-1_1', function(S){
+                    S.log("t6 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            // 依赖去重2
+            T["mergeRelies2"] = function(){
+                KSLITE.use('test-1,test-1_1', function(S){
+                    S.log("t7 use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            //模块不存在
+            T["mod404"] = function(){
+                KSLITE.use('test-3', function(S){
+                    S.log("use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            //模块内容不对
+            T["mod500"] = function(){
+                KSLITE.use('test-4', function(S){
+                    S.log("use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            };
+            //手动combo combo中文件test-5,test-5_1
+            T["combo"] = function(){
+                KSLITE.use('test-5', function(S){
+                    S.log("use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            }
+			//手动combo2 combo文件中模块乱序.test-6 test-6_1_1 test-6_1
+            T["combo2"] = function(){
+                KSLITE.use('test-6', function(S){
+                    S.log("use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            }
+			//重复add 不覆盖
+            T["multiAdd"] = function(){
+                KSLITE.use('test-7', function(S){
+                    S.log("use success!");
+                    console.log(KSLITE.Env._relies);
+                });
+            }
+            //检测循环引用
+            T["loopReq1"] = function(){
+                KSLITE.use("test-a", function(S){
+                    S.log("t8 use success!");
+                });
+            }
+            
+            // 检测循环引用2
+            T["loopReq2"] = function(){
+                KSLITE.use("test-a,test-b", function(S){
+                    S.log("t9 use success!");
+                });
+            }
+            
+            // 检测循环引用3
+            T["loopReq3"] = function(){
+                KSLITE.use("test-w", function(S){
+                    S.log("t10 use success!");
+                });
+            }
+            
+            // 检测循环引用4
+            T["loopReq4"] = function(){
+                KSLITE.use("test-w,test-x,test-y,test-z", function(S){
+                    S.log("t11 use success!");
+                });
+            }
+        </script>
+        <script type="text/javascript">
+            (function(){
+                for (var k in T) {
+                    document.writeln("<input type='button' value='test: " + k + "' onclick='T[\"" + k + "\"]();'>");
+                }
+            })();
+            //T["mergeRelies2"]();
+        </script>
+    </body>
+</html>
