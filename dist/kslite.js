@@ -3,11 +3,12 @@
  * KSLITE -- KISSY的子集,通过精简过的有限的方法,提供模块管理,OO支持等基本功能
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
- */ (function(win, S, undefined) {
+ */ 
+(function(win, S, undefined) {
     var kslite_config = {
         "lt_pkgs": {}, //定义包
         "lt_v": "0.0.1",
-        "lt_t": "20130710055319"
+        "lt_t": "20130715110227"
     };
 
     kslite_config.lt_pkgs.packages = "http://a.alimama.cn/kslite/";
@@ -244,8 +245,9 @@
          * @return {KSLITE}
          */
         log: function(msg, cat) {
-            if (S.Config.debug && win.console && console.log) {
-                console[cat && console[cat] ? cat : 'log'](msg);
+            var s = 'console';
+            if (S.Config.debug && win[s] && win[s].log) {
+                win[s][cat && win[s][cat] ? cat : 'log'](msg);
             }
             return S;
         },

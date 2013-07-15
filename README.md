@@ -69,31 +69,34 @@ KSLITE.provide(["test-program"], function(require){
 ###path(module, callback) 
 
 ###log( msg [,cat] )
-msg : String
+__msg : String__
 将要显示的信息
-cat : String 
+
+__cat : String__ 
 信息的类别，默认是log
 
 ###getScript( url[,success][,charset][, expando] )
 获取一个脚本
 
-url : String
+__url : String__
 脚本路径
 
-success : Function
+__success : Function__
 成功的回调函数
 
-charset : String
+__charset : String__
 字符集, 如果不设，默认与config里的一致
 
-expando : Object
+__expando : Object__
 额外添加的属性的键值对
 
 ###getScript( url[,attrs])  return Node
-url : String
+__url : String__
 脚本路径
 
-attrs : Object
+__attrs : Object__
+
+```
 {
   charset: String,
   success: Function,
@@ -101,20 +104,22 @@ attrs : Object
   timeout: Number,
   expando: Object
 }
+```
 各属性同上
 
 ###substitute(str,o[, regexp][, multiSubstitute]) return String
 简易模板函数
-str : String
+
+__str : String__
 模板字符串
 
-o   : Object
+__o   : Object__
 数据源
 
-regexp : String 
+__regexp : String__ 
 用于替换的正则, 默认为/\\?\{([^{}]+)\}/g
 
-multiSubstitute : Boolean
+__multiSubstitute : Boolean__
 是否多次替换，默认为true
 
 ```
@@ -131,23 +136,25 @@ KSLITE.log( KSLITE.substitute(tmpl1, data, /\{\{([^}])\}\}/g)) //return "iam 123
 ```
 
 ###clone(obj)  return Object
-obj : Object
+
+__obj : Object__
 被克隆的源
 
 ###mix(r, s[,ov][, wl]) return Object
 复制源对象上的键值到目标对象上
 
-r : Object
+__r : Object__
 目标对象
 
-s : Object
+__s : Object__
 源对象
 
-ov : Boolean
+__ov : Boolean__
 是否强制覆盖
 
-wl :  Array
+__wl :  Array__
 如果存在白名单,只覆盖白名单内的对象.
+
 ###multiAsync
 
 ###extend
