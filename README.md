@@ -57,25 +57,25 @@ KSLITE.provide(["test-program"], function(require){
 });
 ```
 
-##开放接口
+## 开放接口
 所有方法绑定在全局变量KSLITE上
 
-###declare([module][,depenArry,] factory) 
+### declare([module][,depenArry,] factory) 
 定义一个模块
 
-###provide(module, callback) 
+### provide(module, callback) 
 使用模块
 
-###path(module, callback) 
+### path(module, callback) 
 
-###log( msg [,cat] )
+### log( msg [,cat] )
 __msg : String__
 将要显示的信息
 
 __cat : String__ 
 信息的类别，默认是log
 
-###getScript( url[,success][,charset][, expando] )
+### getScript( url[,success][,charset][, expando] )
 获取一个脚本
 
 __url : String__
@@ -90,7 +90,7 @@ __charset : String__
 __expando : Object__
 额外添加的属性的键值对
 
-###getScript( url[,attrs])  return Node
+### getScript( url[,attrs])  return Node
 __url : String__
 脚本路径
 
@@ -107,7 +107,7 @@ __attrs : Object__
 ```
 各属性同上
 
-###substitute(str,o[, regexp][, multiSubstitute]) return String
+### substitute(str,o[, regexp][, multiSubstitute]) return String
 简易模板函数
 
 __str : String__
@@ -135,12 +135,12 @@ KSLITE.log( KSLITE.substitute(tmpl, data) )  //return "iam 123, heis234"
 KSLITE.log( KSLITE.substitute(tmpl1, data, /\{\{([^}])\}\}/g)) //return "iam 123, heis234"
 ```
 
-###clone(obj)  return Object
+### clone(obj)  return Object
 
 __obj : Object__
 被克隆的源
 
-###mix(r, s[,ov][, wl]) return Object
+### mix(r, s[,ov][, wl]) return Object
 复制源对象上的键值到目标对象上
 
 __r : Object__
@@ -155,20 +155,20 @@ __ov : Boolean__
 __wl :  Array__
 如果存在白名单,只覆盖白名单内的对象.
 
-###multiAsync
+### multiAsync
 
-###extend
+### extend
 
-###iA(obj)  return Boolean
+### iA(obj)  return Boolean
 判断是不是数组
 
-###iF(obj) return Boolean
+### iF(obj) return Boolean
 判断是不是函数
 
-###iPO(obj) return Boolean
+### iPO(obj) return Boolean
 判断是不是一个纯对象，节点和window排除
 
-###iS(obj) return Boolean
+### iS(obj) return Boolean
 判断是不是一个字符串
 
 ## 配置项：

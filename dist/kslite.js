@@ -8,7 +8,7 @@
     var kslite_config = {
         "lt_pkgs": {}, //定义包
         "lt_v": "0.0.1",
-        "lt_t": "20130715110227"
+        "lt_t": "20130814111824"
     };
 
     kslite_config.lt_pkgs.packages = "http://a.alimama.cn/kslite/";
