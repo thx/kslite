@@ -677,7 +677,7 @@
     //增加模块路径
     //模块名@模块路径@模块编码
     function addPath(s) {
-        if (S.iS(kslite_pkgpaths[i])) {
+        if (S.iS(s)) {
             var pp = s.split("@");
             sconfig.lt_pkgs[pp[0]] = {
                 url: pp[1],

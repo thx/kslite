@@ -152,7 +152,7 @@
         timeout: 10,
         charset: 'gbk',
         lt_pkgs : {}, //缓存包对象
-        timestamp: win.KSLITEtimestamp || '20130815075023' //timestamp会被替换
+        timestamp: win.KSLITEtimestamp || '20130815085442' //timestamp会被替换
     };
 
     //暂存，方便压缩
@@ -677,7 +677,7 @@
     //增加模块路径
     //模块名@模块路径@模块编码
     function addPath(s) {
-        if (S.iS(kslite_pkgpaths[i])) {
+        if (S.iS(s)) {
             var pp = s.split("@");
             sconfig.lt_pkgs[pp[0]] = {
                 url: pp[1],
