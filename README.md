@@ -205,15 +205,4 @@ KSLITEpkgPaths.push({
 })
 ```
 
-###  KSLITEcurrentScript 
-base的脚本 , 也可以在脚本上写上kslite属性
-
-
-
-## 配置项：
-kslite 相关配置项，在局部变量 kslite_config 中，之后 mix 入 S.Config
-
- - lt_b：kslite 的 base，推荐每个产出写死一个 kslite 的 base 地址，而不是通过 currentScript 获得。因为kslite不一定作为 `<script>`节点静态引入
- - lt_pkgs：包路径信息，如上。
- - lt_t：时间戳比如 20101129.js
- - lt_v：版本 如 1.1.5 
+### KSLITEcurrentScript 
