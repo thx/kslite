@@ -28,6 +28,7 @@ add 同样支持 require。可以在载入 js 后根据 require 串行加载更�
 
 ## 使用方法
 约定禁止不加模块id, 不允许使用下面的形式
+
 ```js
 // 文件及路径, test包下的math模块, 以下类似
 //test/math.js 
@@ -189,6 +190,7 @@ __wl :  Array__
 kslite加载后执行的回调, 数组格式，加载后调用push方法直接执行
 
 或者在加载完成后调用
+
 ```js
 KSLITEonLoad.push({
 })
@@ -200,6 +202,7 @@ KSLITEonLoad.push({
 格式：包名@路径@charset
 
 或者在加载完成后调用
+
 ```js
 KSLITEpkgPaths.push({
 })
