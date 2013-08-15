@@ -1,35 +1,25 @@
 /**
  * KISSY -- An Enjoyable UI Library : Keep It Simple & Stupid, Short & Sweet, Slim & Sexy...<br/>
- * KSLITE -- KISSYçš„å­é›†,é€šè¿‡ç²¾ç®€è¿‡çš„æœ‰é™çš„æ–¹æ³•,æä¾›æ¨¡å—ç®¡ç†,OOæ”¯æŒç­‰åŸºæœ¬åŠŸèƒ½
+ * KSLITE -- KISSYµÄ×Ó¼¯,Í¨¹ı¾«¼ò¹ıµÄÓĞÏŞµÄ·½·¨,Ìá¹©Ä£¿é¹ÜÀí,OOÖ§³ÖµÈ»ù±¾¹¦ÄÜ
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
- */ 
+ * 
+ */
+
 (function(win, S, undefined) {
-    var kslite_config = {
-        "lt_pkgs": {}, //å®šä¹‰åŒ…
-        "lt_v": "{version}",
-        "lt_t": "{timestamp}"
-    };
-
-    kslite_config.lt_pkgs.packages = "http://a.alimama.cn/kslite/";
-
-    //KSLITEæ²¡æœ‰å®šä¹‰çš„æ—¶å€™
+    //KSLITEÃ»ÓĞ¶¨ÒåµÄÊ±ºò
+    //ÒÑ¾­¶¨ÒåµÄÊ±ºò²»ÔÙ´¦Àí
     if (win[S] === undefined) {
-        //Sé‡ç½®ä¸ºå¯¹è±¡
+        //SÖØÖÃÎª¶ÔÏó
         S = win[S] = {};
     } else {
-        //å·²ç»å®šä¹‰çš„æ—¶å€™ï¼ŒæŠŠå½“å‰è®¾ç½®çš„pkgsåŠ åˆ°å·²ç»å­˜åœ¨çš„ksliteä¸Š
-        KSLITE.Config.lt_pkgs = KSLITE.mix(kslite_config.lt_pkgs, KSLITE.Config.lt_pkgs);
         return;
     }
 
-    //å®Œæˆåˆå§‹åŒ–ä¹‹å‰æŠŠä¹‹å‰é™„åŠ çš„loadæš‚å­˜ä¸€ä¸‹
-    var kslite_onload = win.KSLITEonLoad,
-        kslite_pkgpaths = win.KSLITEpkgPaths;
-
-    //å¿«æ·å¯¹è±¡
+    //¿ì½İ¶ÔÏó
     var doc = win.document;
     var toString = Object.prototype.toString;
+    var i;
 
     var isType = function(type) {
         return function(o) {
@@ -40,10 +30,10 @@
     /**
      * Copies all the properties of s to r.
      * @method mix
-     * @param r {Object} ç›®æ ‡å¯¹è±¡
-     * @param s {Object} æºå¯¹è±¡
-     * @param ov {Boolean} æ˜¯å¦å¼ºåˆ¶è¦†ç›–
-     * @param wl {Array} å¦‚æœå­˜åœ¨ç™½åå•,åªè¦†ç›–ç™½åå•å†…çš„å¯¹è±¡.
+     * @param r {Object} Ä¿±ê¶ÔÏó
+     * @param s {Object} Ô´¶ÔÏó
+     * @param ov {Boolean} ÊÇ·ñÇ¿ÖÆ¸²¸Ç
+     * @param wl {Array} Èç¹û´æÔÚ°×Ãûµ¥,Ö»¸²¸Ç°×Ãûµ¥ÄÚµÄ¶ÔÏó.
      * @return {Object} the augmented object
      */
     var mix = function(r, s, ov, wl) {
@@ -73,11 +63,11 @@
         return r;
     };
 
-    //å¿«æ·æ–¹æ³•ï¼Œå‡†å¤‡æ’å…¥å…ƒç´ çš„èŠ‚ç‚¹ 
-    var gbt = 'getElementsByTagName'; //å­—ç¬¦ä¸²æš‚å­˜,æ–¹ä¾¿å‹ç¼©
+    //¿ì½İ·½·¨£¬×¼±¸²åÈëÔªËØµÄ½Úµã 
+    var gbt = 'getElementsByTagName'; //×Ö·û´®Ôİ´æ,·½±ãÑ¹Ëõ
     var head = doc[gbt]('head')[0] || doc.documentElement;
 
-    //å®šä¹‰å‡ ä¸ªæ¨¡å—çš„çŠ¶æ€
+    //¶¨Òå¼¸¸öÄ£¿éµÄ×´Ì¬
     var INIT = 0;
     var LOADING = 1;
     var LOADED = 2;
@@ -85,7 +75,7 @@
     var ATTACHED = 4;
     var RE_CSS = /\.css(?:\?|$)/i;
 
-    //è„šæœ¬åŠ è½½çš„å›è°ƒå‡½æ•°ï¼Œ IEä¸‹å¤„ç†readyStateï¼Œéœ€è¦åŒæ—¶å¤„ç†loadedå’Œcompleteä¸¤ç§çŠ¶æ€
+    //½Å±¾¼ÓÔØµÄ»Øµ÷º¯Êı£¬ IEÏÂ´¦ÀíreadyState£¬ĞèÒªÍ¬Ê±´¦ÀíloadedºÍcompleteÁ½ÖÖ×´Ì¬
     var scriptOnload = function(node, callback) {
         var re = /^(?:loaded|complete|undefined)$/;
         /*
@@ -109,7 +99,7 @@
     };
 
 
-    //è·å–ç¬¬ä¸€ä¸ªå¯ä»¥äº¤äº’çš„è„šæœ¬
+    //»ñÈ¡µÚÒ»¸ö¿ÉÒÔ½»»¥µÄ½Å±¾
     //IE only
 
     function getInteractiveScript() {
@@ -128,113 +118,60 @@
         return null;
     }
 
-    //æ·»åŠ ksliteæ–¹æ³•
+    var scripts = doc[gbt]('script');
+    var ksCurKey = 'KSLITEcurrentScript';
+
+    //ÊÔÍ¼Í¨¹ıscriptÉÏµÄksliteÊôĞÔÀ´ÕÒµ½µ±Ç°ksliteÊ¹ÓÃµÄ½Å±¾
+    //ÕâĞèÒªÔÚscript±êÇ©ÉÏĞ´ksliteÊôĞÔ
+    if (!win[ksCurKey]) {
+        for (i = 0; i < scripts.length; i++) {
+            if (scripts[i].kslite) {
+                win[ksCurKey] = scripts[i];
+                break;
+            }
+        }
+    }
+
+    //ÕâÀïÈ¡µ½µÄbase¿ÉÄÜ»áÓĞÎÊÌâ£¬ ±ÈÈçÒì²½µÄÊ±ºò, ËùÒÔ×îºÃ»¹ÊÇĞ´ÔÚscriptµÄÊôĞÔÉÏ
+    win[ksCurKey] = (win[ksCurKey] || scripts[scripts.length - 1]);
+
+    S.Env = {
+        mods: {},
+        fns: {},
+        _loadQueue: {},
+        _relies: { //kslite add
+            rq: {},
+            sp: {}
+        }
+    };
+
+    //Ä¬ÈÏÅäÖÃ
+    S.Config = {
+        debug: false,
+        base: (win[ksCurKey].src).split("/").slice(0, -1).join("/") + "/",
+        timeout: 10,
+        charset: 'gbk',
+        lt_pkgs : {}, //»º´æ°ü¶ÔÏó
+        timestamp: win.KSLITEtimestamp || '{timestamp}' //timestamp»á±»Ìæ»»
+    };
+
+    //Ôİ´æ£¬·½±ãÑ¹Ëõ
+    var sconfig = S.Config;
+
+    //debugĞÅÏ¢
+    if (/demo|debug|test/.test(location.href)) {
+        sconfig.debug = true;
+    }
+
+    if (sconfig.debug) {
+        sconfig.timestamp = (new Date()).getTime() + ".js";
+    }
+
+    //Ìí¼Ókslite·½·¨
     mix(S, {
-        //ksliteçš„ç‰ˆæœ¬å·
-        version: kslite_config.lt_v,
-        _init: function() {
-            var x, currentScript, scripts = doc[gbt]('script');
-            //è¯•å›¾é€šè¿‡scriptä¸Šçš„ksliteå±æ€§æ¥æ‰¾åˆ°å½“å‰ksliteä½¿ç”¨çš„è„šæœ¬
-            //è¿™éœ€è¦åœ¨scriptæ ‡ç­¾ä¸Šå†™ksliteå±æ€§
-            if (!win.KSLITEcurrentScript) {
-                for (x = 0; x < scripts.length; x++) {
-                    if (scripts[x].kslite) {
-                        win.KSLITEcurrentScript = scripts[x];
-                        break;
-                    }
-                }
-            }
-            //Fix è¿™é‡Œå–åˆ°çš„baseå¯èƒ½ä¼šæœ‰é—®é¢˜
-            currentScript = win.KSLITEcurrentScript || scripts[scripts.length - 1];
-            win.KSLITEcurrentScript = currentScript;
-
-            var base = (currentScript.src).split("/").slice(0, -1).join("/") + "/";
-
-            S.Env = {
-                mods: {},
-                fns: {},
-                _loadQueue: {},
-                _relies: { //kslite add
-                    rq: {},
-                    sp: {}
-                }
-            };
-
-            //é»˜è®¤é…ç½®
-            S.Config = {
-                debug: false,
-                base: base,
-                timeout: 10,
-                charset: 'gbk',
-                kslite: kslite_config
-            };
-            S.mix(S.Config, kslite_config);
-
-            //å£°æ˜ksliteæ¨¡å—
-            S.declare("kslite", [], function(require, exports) {
-                //åªå¯¼å‡ºæœ€åæ•°ç»„ä¸­çš„æ–¹æ³•
-                exports = S.mix(exports, S, true, ["path", "log", "getScript", "substitute", "clone", "mix", "multiAsync", "extend", "iA", "iF", "iPO", "iS"]);
-            });
-
-            //ä½¿ç”¨ä¸€ä¸‹, logä¸€ä¸‹å·²ç»åŠ è½½å®Œæˆ
-            S.provide(["kslite"], function(require) {
-                S.require("kslite").log("kslite inited");
-            });
-            //debug
-            if (/demo|debug|test/.test(location.href)) {
-                S.Config.debug = true;
-            }
-            if (S.Config.debug) {
-                kslite_config.lt_t += (new Date()).getTime() + ".js";
-            }
-            var i;
-
-            //pkg
-            //å¢åŠ æ¨¡å—è·¯å¾„
-            //æ¨¡å—å@æ¨¡å—è·¯å¾„
-
-            function addPath(s) {
-                var pp = s.split("@");
-                kslite_config.lt_pkgs[pp[0]] = pp[1];
-            }
-
-            //æš´éœ²å‡ºä¸€ä¸ªå…¨å±€å¯¹è±¡æ–¹ä¾¿åˆ«äººè°ƒç”¨ 
-            win.KSLITEpkgPaths = {
-                push: function(s) {
-                    addPath(s);
-                }
-            };
-
-            //å¦‚æœåŠ è½½å‰å·²ç»å­˜åœ¨kslite_pkgpathsä¸”ä¸ºä¸€ä¸ªæ•°ç»„
-            //æŠŠå®ƒä»¬åŠ åˆ°è·¯å¾„é‡Œ
-            if (kslite_pkgpaths && S.iA(kslite_pkgpaths)) {
-                for (i = 0; i < kslite_pkgpaths.length; i++) {
-                    addPath(kslite_pkgpaths[i]);
-                }
-            }
-            //æ—¶é—´æˆ³
-            kslite_config.lt_t = win.KSLITEtimestamp || kslite_config.lt_t;
-
-            //æš´éœ²å‡ºä¸€ä¸ªå…¨å±€æ–¹æ³•å¢åŠ KSLITEåŠ è½½å®Œæˆåçš„è°ƒç”¨
-            win.KSLITEonLoad = {
-                push: function(fn) {
-                    if (fn && S.iF(fn)) {
-                        fn(S);
-                    }
-                }
-            };
-
-            //å¦‚æœè„šæœ¬åŠ è½½ä¹‹å‰å·²ç»å®šä¹‰äº†onloadï¼Œå¹¶ä¸”å®ƒæ˜¯æ•°ç»„
-            //æŠŠKSLITEä½œä¸ºå‚æ•°ä¼ å…¥
-            if (kslite_onload && S.iA(kslite_onload)) {
-                for (i = 0; i < kslite_onload.length; i++) {
-                    if (S.iF(kslite_onload[i])) {
-                        kslite_onload[i](S);
-                    }
-                }
-            }
-        },
-        //å­˜ä¸€ä¸‹å¿«æ·æ–¹å¼
+        //ksliteµÄ°æ±¾ºÅ
+        version: "{version}", //version»á±»Ìæ»»
+        //´æÒ»ÏÂ¿ì½İ·½Ê½
         mix: mix,
         /**
          * Prints debug info.
@@ -246,7 +183,7 @@
          */
         log: function(msg, cat) {
             var s = 'console';
-            if (S.Config.debug && win[s] && win[s].log) {
+            if (sconfig.debug && win[s] && win[s].log) {
                 win[s][cat && win[s][cat] ? cat : 'log'](msg);
             }
             return S;
@@ -254,10 +191,10 @@
         /**
          * Clone Object
          * @method clone
-         * @param o {Object} æºå¯¹è±¡
+         * @param o {Object} Ô´¶ÔÏó
          * @return {Object} the object cloned
          */
-        //å…‹éš†å‡ºå¯¹è±¡o, å¦‚æœæ˜¯æ•°ç»„æˆ–è€…å¯¹è±¡ï¼ŒåŒæ—¶å¤åˆ¶å­å¯¹è±¡
+        //¿ËÂ¡³ö¶ÔÏóo, Èç¹ûÊÇÊı×é»òÕß¶ÔÏó£¬Í¬Ê±¸´ÖÆ×Ó¶ÔÏó
         clone: function(o) {
             var ret = o,
                 b, k;
@@ -283,37 +220,38 @@
          * @return r {Object}
          */
 
-        //åŸå‹ç»§æ‰¿
-        //r å­ç±»
-        //s çˆ¶ç±»
-        //px ç»™å­ç±»æ·»åŠ çš„åŸå‹æ–¹æ³•é›†åˆ
-        //sx ç»™å­ç±»æ·»åŠ çš„é™æ€æ–¹æ³•
+        //Ô­ĞÍ¼Ì³Ğ
+        //r ×ÓÀà
+        //s ¸¸Àà
+        //px ¸ø×ÓÀàÌí¼ÓµÄÔ­ĞÍ·½·¨¼¯ºÏ
+        //sx ¸ø×ÓÀàÌí¼ÓµÄ¾²Ì¬·½·¨
         extend: function(r, s, px, sx) {
             if (!s || !r) {
                 return r;
             }
-            var OP = Object.prototype,
-                O = function(o) {
-                    function F() {}
-                    F.prototype = o;
-                    return new F();
-                }, sp = s.prototype,
-                rp = O(sp);
-            //æ‹·è´åŸå‹
+            var OP = Object.prototype;
+            var O = function(o) {
+                function F() {}
+                F.prototype = o;
+                return new F();
+            };
+            var sp = s.prototype;
+            var rp = O(sp);
+            //¿½±´Ô­ĞÍ
             r.prototype = rp;
-            //ä¿®æ­£constructor
+            //ĞŞÕıconstructor
             rp.constructor = r;
-            //è®¾ç½®superclass, æ–¹ä¾¿å­ç±»æŸ¥æ‰¾
+            //ÉèÖÃsuperclass, ·½±ã×ÓÀà²éÕÒ
             r.superclass = sp;
-            //å¦‚æœsæ˜¯ä¸€ä¸ªå¯¹è±¡ï¼Œè®¾ç½®spçš„constructorä¸ºå®ƒè‡ªå·±
+            //Èç¹ûsÊÇÒ»¸ö¶ÔÏó£¬ÉèÖÃspµÄconstructorÎªËü×Ô¼º
             if (s !== Object && sp.constructor === OP.constructor) {
                 sp.constructor = s;
             }
-            //ç»™å­ç±»åŠ åŸå‹æ–¹æ³•
+            //¸ø×ÓÀà¼ÓÔ­ĞÍ·½·¨
             if (px) {
                 mix(rp, px);
             }
-            //ç»™å­ç±»åŠ é™æ€æ–¹æ³•
+            //¸ø×ÓÀà¼Ó¾²Ì¬·½·¨
             if (sx) {
                 mix(r, sx);
             }
@@ -322,10 +260,10 @@
         /**
          * Substitutes keywords in a string using an object/array.
          * Removes undefined keywords and ignores escaped keywords.
-         * @param str {String}æ¨¡æ¿å­—ç¬¦ä¸²
-         * @param o {String}æ¨¡æ¿æ•°æ®
-         * @param regexp {String}æ›¿æ¢ç”¨æ­£åˆ™ å¯ä»¥ç”¨æ¥ä»£æ›¿é»˜è®¤å€¼
-         * @param multiSubstitute {Boolean} æ˜¯å¦æ”¯æŒå¤šæ¬¡substitute ä¸ºtrue,strä¸­çš„æ¨¡æ¿å¦‚æœåŒ¹é…ä¸åˆ°å°†è¢«ä¿ç•™è€Œä¸æ˜¯ç½®ç©º.
+         * @param str {String}Ä£°å×Ö·û´®
+         * @param o {String}Ä£°åÊı¾İ
+         * @param regexp {String}Ìæ»»ÓÃÕıÔò ¿ÉÒÔÓÃÀ´´úÌæÄ¬ÈÏÖµ
+         * @param multiSubstitute {Boolean} ÊÇ·ñÖ§³Ö¶à´Îsubstitute Îªtrue,strÖĞµÄÄ£°åÈç¹ûÆ¥Åä²»µ½½«±»±£Áô¶ø²»ÊÇÖÃ¿Õ.
          */
         substitute: function(str, o, regexp, multiSubstitute) {
             if (!S.iS(str) || !S.iPO(o)) {
@@ -350,9 +288,9 @@
          *      timeout: number
          *  });
          * </pre>
-         * @param url {String} æ–‡ä»¶åœ°å€
-         * @param success {Function|Object} å›è°ƒå‡½æ•°
-         * @param charset {String} å­—ç¬¦ä¸²
+         * @param url {String} ÎÄ¼şµØÖ·
+         * @param success {Function|Object} »Øµ÷º¯Êı
+         * @param charset {String} ×Ö·û´®
          */
         getScript: function(url, success, charset, expando) {
             var isCSS = RE_CSS.test(url),
@@ -370,6 +308,7 @@
                 }
             }
 
+            //·ÀÖ¹IEÏÂcharsetÊôĞÔÔÚºóÃæµ¼ÖÂ²»ÉúĞ§
             if (charset) {
                 node.charset = charset;
             }
@@ -398,7 +337,7 @@
                 timer = setTimeout(function() {
                     timer = undefined;
                     error();
-                }, (timeout || S.Config.timeout) * 1000);
+                }, (timeout || sconfig.timeout) * 1000);
             }
 
             if (isCSS) {
@@ -413,19 +352,19 @@
             return node;
         },
 
-        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºå‡½æ•°
+        //¹¤¾ßº¯Êı ÊÇ·ñÎªº¯Êı
         iF: isType('Function'),
 
-        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºæ•°ç»„
+        //¹¤¾ßº¯Êı ÊÇ·ñÎªÊı×é
         iA: isType('Array'),
 
-        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºå­—ç¬¦ä¸²
+        //¹¤¾ßº¯Êı ÊÇ·ñÎª×Ö·û´®
         iS: isType('String'),
 
-        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºå¯¹è±¡
+        //¹¤¾ßº¯Êı ÊÇ·ñÎª¶ÔÏó
         iO: isType('Object'),
 
-        //æ˜¯å¦ä¸ºçº¯å¯¹è±¡, æ’é™¤domèŠ‚ç‚¹åŠwindow
+        //ÊÇ·ñÎª´¿¶ÔÏó, ÅÅ³ıdom½Úµã¼°window
         iPO: function(o) {
             return o && S.iO(o) && !o.nodeType && !o.setInterval;
         },
@@ -436,47 +375,45 @@
          * @param fn {Function} entry point into the module that is used to bind module to KSLITE
          * @return {KSLITE}
          */
-        //æ·»åŠ æ¨¡å—åˆ°ç³»ç»Ÿä¸­
-        //name   æ¨¡å—å
-        //fn     æ¨¡å—åŠ è½½æˆåŠŸåå›è°ƒ
-        //config è¯¥æ¨¡å—çš„é…ç½®, åº”è¯¥æ˜¯ä¸€ä¸ªå¯¹è±¡{requires:[xxxx,xxx]} ä¹Ÿå¯ä»¥ç›´æ¥æ˜¯ä¸€ä¸ªæ•°ç»„  
+        //Ìí¼ÓÄ£¿éµ½ÏµÍ³ÖĞ
+        //name   Ä£¿éÃû
+        //fn     Ä£¿é¼ÓÔØ³É¹¦ºó»Øµ÷
+        //config ¸ÃÄ£¿éµÄÅäÖÃ, Ó¦¸ÃÊÇÒ»¸ö¶ÔÏó{requires:[xxxx,xxx]} Ò²¿ÉÒÔÖ±½ÓÊÇÒ»¸öÊı×é  
         add: function(name, fn, config) {
             var mods = S.Env.mods,
                 mod;
-            //å¦‚æœæ¨¡å—å·²ç»åœ¨åŠ è½½ä¸­ç›´æ¥è¿”å›
-            //è¿™é‡Œè²Œä¼¼ä¼šæœ‰é—®é¢˜ï¼Œå¦‚æœå¦ä¸€ä¸ªåœ°æ–¹ä¹Ÿç”¨äº†addï¼Œä¼šä¸ä¼šå¯¼è‡´å®ƒçš„å›è°ƒç›´æ¥ä¸æ‰§è¡Œå‘¢
             if (mods[name] && mods[name].status > INIT) {
                 return;
             }
-            //åŠ å…¥æ¨¡å—çš„çŠ¶æ€
+            //¼ÓÈëÄ£¿éµÄ×´Ì¬
             mod = {
                 name: name,
                 fn: fn || null,
                 status: LOADED
             };
 
-            //å¦‚æœconfigæ˜¯ä¸ªæ•°ç»„, æ”¹å†™ä¸€ä¸‹
+            //Èç¹ûconfigÊÇ¸öÊı×é, ¸ÄĞ´Ò»ÏÂ
             if (S.iA(config)) {
                 config = {
                     requires: config
                 };
             }
-            //æ··åˆä¸€ä¸‹
+            //»ìºÏÒ»ÏÂ
             mix(mod, config);
-            //è®°å½•
+            //¼ÇÂ¼
             mods[name] = mod;
             return S;
         },
         /**
          * Start load specific mods, and fire callback when these mods and requires are attached.<br/>
          * S.use('mod-name',function(S){});
-         * @param modNames {String} ä¸åŒæ¨¡å—é—´ä»¥é€—å·(,)åˆ†éš”
-         * @param callback {Function} ç›¸å…³ä»£ç å¼•å…¥æˆåŠŸåçš„å›è°ƒå‡½æ•°
+         * @param modNames {String} ²»Í¬Ä£¿é¼äÒÔ¶ººÅ(,)·Ö¸ô
+         * @param callback {Function} Ïà¹Ø´úÂëÒıÈë³É¹¦ºóµÄ»Øµ÷º¯Êı
          */
 
-        //ä½¿ç”¨æ¨¡å—
-        //modNames:é€—å·åˆ†éš”çš„æ¨¡å—å
-        //callback : åŠ è½½æˆåŠŸåçš„å›è°ƒ
+        //Ê¹ÓÃÄ£¿é
+        //modNames:¶ººÅ·Ö¸ôµÄÄ£¿éÃû
+        //callback : ¼ÓÔØ³É¹¦ºóµÄ»Øµ÷
         use: function(modNames, callback) {
             modNames = modNames.split(',');
             var mods = S.Env.mods;
@@ -487,7 +424,7 @@
             });
         },
 
-        //æ‰¹é‡è½½å…¥æ¨¡å—
+        //ÅúÁ¿ÔØÈëÄ£¿é
         _aMs: function(modNames, callback) {
             var i, asyncers = {};
             for (i = 0; i < modNames.length; i++) {
@@ -499,8 +436,7 @@
             S.multiAsync(asyncers, callback);
         },
 
-        //å¤„ç†æ¨¡å—åŠ è½½é€»è¾‘
-        //
+        //´¦ÀíÄ£¿é¼ÓÔØÂß¼­
         _aM: function(modName, callback) { //require! | noreg mod | cycling require! | name2path! | load queue!
             var mod, requires;
             var mods = S.Env.mods,
@@ -510,12 +446,12 @@
             function attachMod(mod) {
                 if (mod.status != ATTACHED) {
                     if (mod.fn) {
-                        S.log("attach " + mod.name); //æ³¨å†Œï¼Œè¿™é‡Œå«é™„åŠ 
-                        //æ‰§è¡Œæ¨¡å—
-                        //ä¸Šä¸‹æ–‡Sï¼Œ é™„åŠ çš„æ¨¡å—ï¼Œ æ¨¡å—ä¸­exportsé™„åŠ åˆ°çš„ä½ç½®
+                        //S.log("attach " + mod.name); //×¢²á£¬ÕâÀï½Ğ¸½¼Ó
+                        //Ö´ĞĞÄ£¿é
+                        //ÉÏÏÂÎÄS£¬ ¸½¼ÓµÄÄ£¿é£¬ Ä£¿éÖĞexports¸½¼Óµ½µÄÎ»ÖÃ
                         mod.fn(S, S.require(mod.name), S._ns(mod.name));
                     } else {
-                        S.log("attach " + mod.name + " without expected attach fn!", "warn");
+                        //S.log("attach " + mod.name + " without expected attach fn!", "warn");
                     }
 
                     mod.status = ATTACHED;
@@ -545,32 +481,32 @@
             mod = mods[modName];
             if (mod && mod.status !== INIT) {
                 requires = mod.requires;
-                if (S.iA(requires) && requires.length > 0) { //å¦‚æœæ¨¡å—å­˜åœ¨ä¸”æ¨¡å—å·²ç»åŠ è½½è¿‡äº†
-                    addRelies(mod); //å¤„ç†ä¸€ä¸‹æ¨¡å—çš„ä¾èµ– 
-                    if (rqmap[modName][modName]) { //æœ‰å¾ªç¯ä¾èµ–äº† 
+                if (S.iA(requires) && requires.length > 0) { //Èç¹ûÄ£¿é´æÔÚÇÒÄ£¿éÒÑ¾­¼ÓÔØ¹ıÁË
+                    addRelies(mod); //´¦ÀíÒ»ÏÂÄ£¿éµÄÒÀÀµ 
+                    if (rqmap[modName][modName]) { //ÓĞÑ­»·ÒÀÀµÁË 
                         throw new Error("Fatal Error,Loop Reqs:" + mod.name);
                     }
-                    S.log(mod.name + " to req: " + requires);
+                    //S.log(mod.name + " to req: " + requires);
                     S._aMs(requires, function() {
                         attachMod(mod);
                     });
                 } else {
-                    //æ³¨å†Œæ¨¡å—
+                    //×¢²áÄ£¿é
                     attachMod(mod);
                 }
-            } else { //æ²¡æœ‰æ³¨å†Œçš„æ¨¡å—ï¼Œé‡æ–°æ³¨å†Œä¸€ä¸‹
+            } else { //Ã»ÓĞ×¢²áµÄÄ£¿é£¬ÖØĞÂ×¢²áÒ»ÏÂ
                 mod = {
                     name: modName
                 };
                 S._lM(mod, function() {
-                    S._aM(modName, function() { //å…ˆåŠ è½½å†æ³¨å†Œ
+                    S._aM(modName, function() { //ÏÈ¼ÓÔØÔÙ×¢²á
                         attachMod(mods[modName]);
                     });
                 });
             }
         },
 
-        //åŠ è½½æ¨¡å—
+        //¼ÓÔØµ¥¸öÄ£¿é
         _lM: function(mod, callback) {
             var lq = S.Env._loadQueue,
                 modName = mod.name,
@@ -579,10 +515,10 @@
             if (lq[modName]) {
                 lo = lq[modName];
                 if (lo.c) {
-                    S.log(modName + " is already loaded", "warn");
+                    //S.log(modName + " is already loaded", "warn");
                     callback();
                 } else {
-                    S.log(modName + " is loading,listen to callback");
+                    //S.log(modName + " is loading,listen to callback");
                     lo.fns.push(callback);
                 }
             } else {
@@ -600,11 +536,6 @@
                     S.getScript(mod.fullpath, function() {
                         var i, lo = lq[modName],
                             m;
-                        if (S.__m__) {
-                            m = S.__m__;
-                            S.add(modName, m.fn, m.deps);
-                            S.__m__ = null;
-                        }
                         if (mods[modName].status === INIT) {
                             mods[modName].status = LOADED;
                         }
@@ -619,13 +550,16 @@
                 });
             }
         },
+
+        //·µ»ØÒ»¸öÄ£¿é¶ÔÓ¦µÄµØÖ·
         path: function(s, callback) {
             var pa = s.split("-"),
                 pkgname = pa[0],
-                packages = S.Config.lt_pkgs;
+                packages = sconfig.lt_pkgs,
+                pkg = packages[pkgname];
 
-            if (S.iS(packages[pkgname])) {
-                callback(packages[pkgname] + pa.join("/"));
+            if (S.iS(pkg.url)) {
+                callback(pkg.url + pa.join("/"), pkg);
             }
             /*} else {
                 KSLITE.provide(["packages-router"], function(require) {
@@ -634,17 +568,21 @@
                 });
             }*/
         },
+
+        //´¦ÀíÄ£¿éµÄÈ«Â·¾¶£¬´øÓĞÊ±¼ä´Á
         _gPath: function(mod, fn) {
-            S.path(mod.name, function(p) {
-                mod.fullpath = p + ".js?_t=" + kslite_config.lt_t + ".js";
-                S.log("path " + mod.name + ": " + mod.fullpath);
+            S.path(mod.name, function(path, pkg) {
+                mod.fullpath = path + ".js?_t=" + sconfig.timestamp + ".js";
+                mod.package = pkg;
+                //S.log("path " + mod.name + ": " + mod.fullpath);
                 fn();
             });
         },
+
         multiAsync: function(asyncers, callback) {
             var ctx, k, hasAsyncer = false;
 
-            function isAllComplete() { //æ£€æŸ¥æ˜¯å¦æ‰€æœ‰çš„å¼‚æ­¥éƒ½æ‰§è¡Œå®Œæˆ
+            function isAllComplete() { //¼ì²éÊÇ·ñËùÓĞµÄÒì²½¶¼Ö´ĞĞÍê³É
                 var k, ro = {};
                 for (k in asyncers) {
                     if (!asyncers[k].c) {
@@ -652,14 +590,14 @@
                     }
                     ro[k] = asyncers[k].r;
                 }
-                callback(ro); //éƒ½å®Œæˆåï¼ŒæŠŠç»“æœæ”¶é›†å¹¶æ•´ç†ä¸€ä¸‹ï¼Œå®Œæˆå›è°ƒ
+                callback(ro); //¶¼Íê³Éºó£¬°Ñ½á¹ûÊÕ¼¯²¢ÕûÀíÒ»ÏÂ£¬Íê³É»Øµ÷
             }
-            //åªæœ‰å½“asyncersæœ‰å¯¹è±¡æ—¶æ‰ç»§ç»­
+            //Ö»ÓĞµ±asyncersÓĞ¶ÔÏóÊ±²Å¼ÌĞø
             for (k in asyncers) {
                 hasAsyncer = true;
             }
 
-            //ç›´æ¥è¿”å›ä¸€ä¸ªç©ºå¯¹è±¡
+            //Ö±½Ó·µ»ØÒ»¸ö¿Õ¶ÔÏó
             if (!hasAsyncer) {
                 callback({});
             }
@@ -685,53 +623,105 @@
             }
             return o;
         },
+
         require: function(modName) {
             var modRoot = S._ns(modName);
             modRoot.exports = modRoot.exports || {};
             return modRoot.exports;
         },
 
-        //å£°æ˜ä¸€ä¸ªæ¨¡å—
+        //ÉùÃ÷Ò»¸öÄ£¿é
         declare: function() {
             var interactiveScript, i, arg, id, depsArr, modFactory;
-            //éå†å‚æ•°
+            //±éÀú²ÎÊı
             for (i = 0; i < arguments.length; i++) {
                 arg = arguments[i];
-                if (S.iS(arg)) { //å­—ç¬¦ä¸²ä½œä¸ºæ¨¡å—id
+                if (S.iS(arg)) { //×Ö·û´®×÷ÎªÄ£¿éid
                     id = arg;
-                } else
-                if (S.iA(arg)) { //æ•°ç»„ä½œä¸ºæ¨¡å—ä¾èµ–
+                } else if (S.iA(arg)) { //Êı×é×÷ÎªÄ£¿éÒÀÀµ
                     depsArr = arg;
-                } else
-                if (S.iF(arg)) { //å‡½æ•°ä½œä¸ºæ¨¡å—çš„æ„é€ å‡½æ•°
+                } else if (S.iF(arg)) { //º¯Êı×÷ÎªÄ£¿éµÄ¹¹Ôìº¯Êı
                     modFactory = arg;
                 }
             }
-            if (!id) {
-                interactiveScript = getInteractiveScript();
-                if (interactiveScript) {
-                    id = interactiveScript.getAttribute("mod_name") || false;
-                }
+
+            if (!id) { //Ô¼¶¨½ûÖ¹Ã»ÓĞidµÄÇé¿ö
+                return;
             }
-            if (!id) {
-                S.__m__ = {
-                    deps: depsArr,
-                    fn: function(S, exports, exportsParent) {
-                        modFactory(S.require, exports, exportsParent);
-                    }
-                };
-            } else {
-                S.add(id, function(S, exports, exportsParent) {
-                    modFactory(S.require, exports, exportsParent);
-                }, depsArr);
-            }
+
+            S.add(id, function(S, exports, exportsParent) {
+                modFactory(S.require, exports, exportsParent);
+            }, depsArr);
         },
-        //ä½¿ç”¨æ¨¡å—
+        //ÒÔÊı×éĞÎÊ½Ê¹ÓÃÄ£¿é
         provide: function(modsArr, fn) {
             S.use(modsArr.join(","), function(S) {
                 fn(S.require);
             });
         }
     });
-    S._init();
-})(window, 'KSLITE');
+
+    //ÉùÃ÷ksliteÄ£¿é
+    S.declare("kslite", [], function(require, exports) {
+        //Ö»µ¼³ö×îºóÊı×éÖĞµÄ·½·¨
+        exports = S.mix(exports, S, true, ["path", "log", "getScript", "substitute", "clone", "mix", "multiAsync", "extend", "iA", "iF", "iPO", "iS"]);
+    });
+
+    //Ê¹ÓÃÒ»ÏÂ, logÒ»ÏÂÒÑ¾­¼ÓÔØÍê³É
+    S.provide(["kslite"], function(require) {
+        S.require("kslite").log("kslite inited");
+    });
+
+
+    //pkg
+    //Ôö¼ÓÄ£¿éÂ·¾¶
+    //Ä£¿éÃû@Ä£¿éÂ·¾¶@Ä£¿é±àÂë
+    function addPath(s) {
+        if (S.iS(kslite_pkgpaths[i])) {
+            var pp = s.split("@");
+            sconfig.lt_pkgs[pp[0]] = {
+                url: pp[1],
+                charset: pp[2] || sconfig.charset
+            };
+        } else if (S.iO(s)) {
+            S.mix(sconfig.lt_pkgs, s);
+        }
+    }
+
+    var kslite_pkgpaths = win.KSLITEpkgPaths;
+
+    //±©Â¶³öÒ»¸öÈ«¾Ö·½·¨Ôö¼ÓKSLITE¼ÓÔØÍê³ÉºóµÄµ÷ÓÃ
+    win.KSLITEpkgPaths = {
+        push: function(s) {
+            addPath(s);
+        }
+    };
+
+    //Èç¹û¼ÓÔØÇ°ÒÑ¾­´æÔÚkslite_pkgpathsÇÒÎªÒ»¸öÊı×é
+    //°ÑËüÃÇ¼Óµ½Â·¾¶Àï
+    if (kslite_pkgpaths && S.iA(kslite_pkgpaths)) {
+        for (i = 0; i < kslite_pkgpaths.length; i++) {
+            addPath(kslite_pkgpaths[i]);
+        }
+    }
+
+    var ksLoadKey = 'KSLITEonLoad';
+    var kslite_onload = win[ksLoadKey];
+
+    //±©Â¶³öÒ»¸öÈ«¾Ö·½·¨Ôö¼ÓKSLITE¼ÓÔØÍê³ÉºóµÄµ÷ÓÃ
+    win[ksLoadKey] = {
+        push: function(fn) {
+            if (fn && S.iF(fn)) {
+                fn(S);
+            }
+        }
+    };
+
+    //Èç¹û½Å±¾¼ÓÔØÖ®Ç°ÒÑ¾­¶¨ÒåÁËonload£¬²¢ÇÒËüÊÇÊı×é
+    //°ÑKSLITE×÷Îª²ÎÊı´«Èë
+    if (kslite_onload && S.iA(kslite_onload)) {
+        for (i = 0; i < kslite_onload.length; i++) {
+            win[ksLoadKey].push(kslite_onload[i]);
+        }
+    }
+})(this, 'KSLITE');

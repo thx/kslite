@@ -103,6 +103,7 @@ describe('kslite', function() {
             it('函数判断正常', function() {
                 var tmpl = "iam {a}, heis{b}";
                 var tmpl1 = "iam {{a}}, heis{{b}}";
+                var tmpl2 = "iam {a}, heis{b},{c}";
                 var data = {
                     a: 123,
                     b: 234
@@ -110,13 +111,96 @@ describe('kslite', function() {
 
                 expect(KSLITE.substitute(tmpl, data)).toEqual("iam 123, heis234");
                 expect(KSLITE.substitute(tmpl1, data, /\{\{([^}])\}\}/g)).toEqual("iam 123, heis234");
+                expect(KSLITE.substitute(tmpl2, data, null, true)).toEqual("iam 123, heis234,{c}");
+                expect(KSLITE.substitute(tmpl2, data)).toEqual("iam 123, heis234,");
             });
         });
 
+        describe('extend', function() {
+            it('函数功能正常', function() {
 
+                function Person(name) {
+                    this.init(name);
+                }
 
+                KSLITE.mix(Person.prototype, {
+                    init: function(name) {
+                        this.name = name;
+                    },
+                    getName: function() {
+                        return "Person's Name: " + this.name;
+                    }
+                });
 
+                function Stuff(name, id) {
+                    this.init(name, id);
+                }
 
+                KSLITE.extend(Stuff, Person, {
+                    init: function(name, id) {
+                        Stuff.superclass.init.apply(this, arguments);
+                        this.id = id;
+                    },
+                    getInfo: function() {
+                        return "Stuff's Name&id: " + this.name + " " + this.id;
+                    }
+                });
+
+                var s1 = new Stuff("s", 1);
+                expect(s1.getName()).toBe("Person's Name: s");
+                expect(s1.getInfo()).toBe("Stuff's Name&id: s 1");
+
+                expect((s1 instanceof Person)).toEqual(true);
+                expect((s1 instanceof Stuff)).toEqual(true);
+                expect((s1.constructor.name)).toBe('Stuff');
+            });
+
+        });
+
+    });
+
+    describe('全局配置', function() {
+        describe('KSLITEonLoad', function() {
+            it('请求成功后回调', function() {
+                expect(window.testksliteonload).toBe(1);
+            });
+
+            it('请求成功后再次请求直接修改', function() {
+                KSLITEonLoad.push(function() {
+                    window.testksliteonload = 2;
+                });
+
+                expect(window.testksliteonload).toBe(2);
+            });
+        });
+
+        describe('KSLITEpkgPaths', function() {
+            it('添加包路径', function() {
+                KSLITE.path('tanxssp', function(p, pkg) {
+                    expect(p).toEqual('http://cdn.tanx.com/t/tanxssp');
+                    expect(pkg).toEqual({
+                        url: 'http://cdn.tanx.com/t/',
+                        charset: 'gbk'
+                    });
+                });
+
+                KSLITE.path('tkapi', function(p, pkg) {
+                    expect(p).toEqual('http://a.alimama.cn/tkapi');
+                    expect(pkg).toEqual({
+                        url: 'http://a.alimama.cn/',
+                        charset: 'utf-8'
+                    });
+                });
+            });
+        });
+
+        describe('KSLITEtimestamp', function() {
+            it('请求的路径上有时间戳', function() {
+                // KSLITE._gPath('test', function(s){
+                //     console.log(s);
+                // })
+            });
+        });
 
     });
 });

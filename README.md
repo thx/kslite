@@ -27,6 +27,7 @@ add 同样支持 require。可以在载入 js 后根据 require 串行加载更�
 文件使用utf-8编码, 在合并到别的工程的时候手工编码转换
 
 ## 使用方法
+约定禁止不加模块id, 不允许使用下面的形式
 ```js
 // 文件及路径, test包下的math模块, 以下类似
 //test/math.js 
@@ -35,18 +36,21 @@ KSLITE.declare([], function(require, exports){
         return a + b;
     };
 });
+```
 
-//  test/increment.js
-KSLITE.declare(['test-math'], function(require, exports){
-    //注意这里需要调用一下require方法
-    var add = require('test-math').add;
-    exports.increment = function(a){
-        return add(a,1);
+下面是正确的写法
+
+```js
+// 文件及路径, test包下的math模块, 以下类似
+//test/math.js 
+KSLITE.declare('test-math', function(require, exports){
+    exports.add = function(a, b){
+        return a + b;
     };
 });
 
 //  test/program.js
-KSLITE.declare(["test-increment"], function(require, exports){
+KSLITE.declare('test-program', ["test-increment"], function(require, exports){
     var inc = require("test-increment").increment;
    exports.result = inc(1);
 });
@@ -66,7 +70,13 @@ KSLITE.provide(["test-program"], function(require){
 ### provide(module, callback) 
 使用模块
 
+### use(modules, callback) 
+使用模块
+modules是以,分隔的模块名的字符串, 如'test-a, test-b'
+
+
 ### path(module, callback) 
+返回对应的模块的地址
 
 ### log( msg [,cat] )
 __msg : String__
@@ -117,7 +127,7 @@ __o   : Object__
 数据源
 
 __regexp : String__ 
-用于替换的正则, 默认为/\\?\{([^{}]+)\}/g
+用于替换的正则, 默认为`/\\?\{([^{}]+)\}/g`
 
 __multiSubstitute : Boolean__
 是否多次替换，默认为true
@@ -170,6 +180,35 @@ __wl :  Array__
 
 ### iS(obj) return Boolean
 判断是不是一个字符串
+
+## 全局配置方法
+###  KSLITEtimestamp 
+时间戳, 默认为当前kslite版本时间
+
+###  KSLITEonLoad 
+kslite加载后执行的回调, 数组格式，加载后调用push方法直接执行
+
+或者在加载完成后调用
+```js
+KSLITEonLoad.push({
+})
+```
+
+###  KSLITEpkgPaths
+预定义的包
+
+格式：包名@路径@charset
+
+或者在加载完成后调用
+```js
+KSLITEpkgPaths.push({
+})
+```
+
+###  KSLITEcurrentScript 
+base的脚本 , 也可以在脚本上写上kslite属性
+
+
 
 ## 配置项：
 kslite 相关配置项，在局部变量 kslite_config 中，之后 mix 入 S.Config
