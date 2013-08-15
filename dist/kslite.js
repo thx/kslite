@@ -3,7 +3,7 @@
  * KSLITE -- KISSY���Ӽ�,ͨ�������������޵ķ���,�ṩģ������,OO֧�ֵȻ�������
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
- * 
+ * @modify by hubo.hb@alibaba-inc.com 
  */
 
 (function(win, S, undefined) {
@@ -152,7 +152,7 @@
         timeout: 10,
         charset: 'gbk',
         lt_pkgs : {}, //����������
-        timestamp: win.KSLITEtimestamp || '20130815073725' //timestamp�ᱻ�滻
+        timestamp: win.KSLITEtimestamp || '20130815074332' //timestamp�ᱻ�滻
     };
 
     //�ݴ棬����ѹ��
@@ -544,7 +544,7 @@
                         }
                         lo.c = true;
                         lo.fns = undefined;
-                    }, null, {
+                    }, mod.charset, {
                         mod_name: modName
                     });
                 });

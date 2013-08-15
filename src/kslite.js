@@ -3,7 +3,7 @@
  * KSLITE -- KISSY的子集,通过精简过的有限的方法,提供模块管理,OO支持等基本功能
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
- * 
+ * @modify by hubo.hb@alibaba-inc.com 
  */
 
 (function(win, S, undefined) {
@@ -544,7 +544,7 @@
                         }
                         lo.c = true;
                         lo.fns = undefined;
-                    }, null, {
+                    }, mod.charset, {
                         mod_name: modName
                     });
                 });
