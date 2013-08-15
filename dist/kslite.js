@@ -1,22 +1,22 @@
 /**
  * KISSY -- An Enjoyable UI Library : Keep It Simple & Stupid, Short & Sweet, Slim & Sexy...<br/>
- * KSLITE -- KISSY���Ӽ�,ͨ�������������޵ķ���,�ṩģ������,OO֧�ֵȻ�������
+ * KSLITE -- KISSY的子集,通过精简过的有限的方法,提供模块管理,OO支持等基本功能
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
  * @modify by hubo.hb@alibaba-inc.com 
  */
 
 (function(win, S, undefined) {
-    //KSLITEû�ж�����ʱ��
-    //�Ѿ�������ʱ�����ٴ���
+    //KSLITE没有定义的时候
+    //已经定义的时候不再处理
     if (win[S] === undefined) {
-        //S����Ϊ����
+        //S重置为对象
         S = win[S] = {};
     } else {
         return;
     }
 
-    //���ݶ���
+    //快捷对象
     var doc = win.document;
     var toString = Object.prototype.toString;
     var i;
@@ -30,10 +30,10 @@
     /**
      * Copies all the properties of s to r.
      * @method mix
-     * @param r {Object} Ŀ������
-     * @param s {Object} Դ����
-     * @param ov {Boolean} �Ƿ�ǿ�Ƹ���
-     * @param wl {Array} �������ڰ�����,ֻ���ǰ������ڵĶ���.
+     * @param r {Object} 目标对象
+     * @param s {Object} 源对象
+     * @param ov {Boolean} 是否强制覆盖
+     * @param wl {Array} 如果存在白名单,只覆盖白名单内的对象.
      * @return {Object} the augmented object
      */
     var mix = function(r, s, ov, wl) {
@@ -63,11 +63,11 @@
         return r;
     };
 
-    //���ݷ�����׼������Ԫ�صĽڵ� 
-    var gbt = 'getElementsByTagName'; //�ַ����ݴ�,����ѹ��
+    //快捷方法，准备插入元素的节点 
+    var gbt = 'getElementsByTagName'; //字符串暂存,方便压缩
     var head = doc[gbt]('head')[0] || doc.documentElement;
 
-    //���弸��ģ����״̬
+    //定义几个模块的状态
     var INIT = 0;
     var LOADING = 1;
     var LOADED = 2;
@@ -75,7 +75,7 @@
     var ATTACHED = 4;
     var RE_CSS = /\.css(?:\?|$)/i;
 
-    //�ű����صĻص������� IE�´���readyState����Ҫͬʱ����loaded��complete����״̬
+    //脚本加载的回调函数， IE下处理readyState，需要同时处理loaded和complete两种状态
     var scriptOnload = function(node, callback) {
         var re = /^(?:loaded|complete|undefined)$/;
         /*
@@ -99,7 +99,7 @@
     };
 
 
-    //��ȡ��һ�����Խ����Ľű�
+    //获取第一个可以交互的脚本
     //IE only
 
     function getInteractiveScript() {
@@ -121,8 +121,8 @@
     var scripts = doc[gbt]('script');
     var ksCurKey = 'KSLITEcurrentScript';
 
-    //��ͼͨ��script�ϵ�kslite�������ҵ���ǰksliteʹ�õĽű�
-    //����Ҫ��script��ǩ��дkslite����
+    //试图通过script上的kslite属性来找到当前kslite使用的脚本
+    //这需要在script标签上写kslite属性
     if (!win[ksCurKey]) {
         for (i = 0; i < scripts.length; i++) {
             if (scripts[i].kslite) {
@@ -132,7 +132,7 @@
         }
     }
 
-    //����ȡ����base���ܻ������⣬ �����첽��ʱ��, �������û���д��script��������
+    //这里取到的base可能会有问题， 比如异步的时候, 所以最好还是写在script的属性上
     win[ksCurKey] = (win[ksCurKey] || scripts[scripts.length - 1]);
 
     S.Env = {
@@ -145,20 +145,20 @@
         }
     };
 
-    //Ĭ������
+    //默认配置
     S.Config = {
         debug: false,
         base: (win[ksCurKey].src).split("/").slice(0, -1).join("/") + "/",
         timeout: 10,
         charset: 'gbk',
-        lt_pkgs : {}, //����������
-        timestamp: win.KSLITEtimestamp || '20130815074332' //timestamp�ᱻ�滻
+        lt_pkgs : {}, //缓存包对象
+        timestamp: win.KSLITEtimestamp || '20130815075023' //timestamp会被替换
     };
 
-    //�ݴ棬����ѹ��
+    //暂存，方便压缩
     var sconfig = S.Config;
 
-    //debug��Ϣ
+    //debug信息
     if (/demo|debug|test/.test(location.href)) {
         sconfig.debug = true;
     }
@@ -167,11 +167,11 @@
         sconfig.timestamp = (new Date()).getTime() + ".js";
     }
 
-    //����kslite����
+    //添加kslite方法
     mix(S, {
-        //kslite�İ汾��
-        version: "0.0.1", //version�ᱻ�滻
-        //��һ�¿��ݷ�ʽ
+        //kslite的版本号
+        version: "0.0.1", //version会被替换
+        //存一下快捷方式
         mix: mix,
         /**
          * Prints debug info.
@@ -191,10 +191,10 @@
         /**
          * Clone Object
          * @method clone
-         * @param o {Object} Դ����
+         * @param o {Object} 源对象
          * @return {Object} the object cloned
          */
-        //��¡������o, �������������߶�����ͬʱ�����Ӷ���
+        //克隆出对象o, 如果是数组或者对象，同时复制子对象
         clone: function(o) {
             var ret = o,
                 b, k;
@@ -220,11 +220,11 @@
          * @return r {Object}
          */
 
-        //ԭ�ͼ̳�
-        //r ����
-        //s ����
-        //px ���������ӵ�ԭ�ͷ�������
-        //sx ���������ӵľ�̬����
+        //原型继承
+        //r 子类
+        //s 父类
+        //px 给子类添加的原型方法集合
+        //sx 给子类添加的静态方法
         extend: function(r, s, px, sx) {
             if (!s || !r) {
                 return r;
@@ -237,21 +237,21 @@
             };
             var sp = s.prototype;
             var rp = O(sp);
-            //����ԭ��
+            //拷贝原型
             r.prototype = rp;
-            //����constructor
+            //修正constructor
             rp.constructor = r;
-            //����superclass, ������������
+            //设置superclass, 方便子类查找
             r.superclass = sp;
-            //����s��һ������������sp��constructorΪ���Լ�
+            //如果s是一个对象，设置sp的constructor为它自己
             if (s !== Object && sp.constructor === OP.constructor) {
                 sp.constructor = s;
             }
-            //��������ԭ�ͷ���
+            //给子类加原型方法
             if (px) {
                 mix(rp, px);
             }
-            //�������Ӿ�̬����
+            //给子类加静态方法
             if (sx) {
                 mix(r, sx);
             }
@@ -260,10 +260,10 @@
         /**
          * Substitutes keywords in a string using an object/array.
          * Removes undefined keywords and ignores escaped keywords.
-         * @param str {String}ģ���ַ���
-         * @param o {String}ģ������
-         * @param regexp {String}�滻������ ������������Ĭ��ֵ
-         * @param multiSubstitute {Boolean} �Ƿ�֧�ֶ���substitute Ϊtrue,str�е�ģ������ƥ�䲻�����������������ÿ�.
+         * @param str {String}模板字符串
+         * @param o {String}模板数据
+         * @param regexp {String}替换用正则 可以用来代替默认值
+         * @param multiSubstitute {Boolean} 是否支持多次substitute 为true,str中的模板如果匹配不到将被保留而不是置空.
          */
         substitute: function(str, o, regexp, multiSubstitute) {
             if (!S.iS(str) || !S.iPO(o)) {
@@ -288,9 +288,9 @@
          *      timeout: number
          *  });
          * </pre>
-         * @param url {String} �ļ���ַ
-         * @param success {Function|Object} �ص�����
-         * @param charset {String} �ַ���
+         * @param url {String} 文件地址
+         * @param success {Function|Object} 回调函数
+         * @param charset {String} 字符串
          */
         getScript: function(url, success, charset, expando) {
             var isCSS = RE_CSS.test(url),
@@ -308,7 +308,7 @@
                 }
             }
 
-            //��ֹIE��charset�����ں��浼�²���Ч
+            //防止IE下charset属性在后面导致不生效
             if (charset) {
                 node.charset = charset;
             }
@@ -352,19 +352,19 @@
             return node;
         },
 
-        //���ߺ��� �Ƿ�Ϊ����
+        //工具函数 是否为函数
         iF: isType('Function'),
 
-        //���ߺ��� �Ƿ�Ϊ����
+        //工具函数 是否为数组
         iA: isType('Array'),
 
-        //���ߺ��� �Ƿ�Ϊ�ַ���
+        //工具函数 是否为字符串
         iS: isType('String'),
 
-        //���ߺ��� �Ƿ�Ϊ����
+        //工具函数 是否为对象
         iO: isType('Object'),
 
-        //�Ƿ�Ϊ������, �ų�dom�ڵ㼰window
+        //是否为纯对象, 排除dom节点及window
         iPO: function(o) {
             return o && S.iO(o) && !o.nodeType && !o.setInterval;
         },
@@ -375,45 +375,45 @@
          * @param fn {Function} entry point into the module that is used to bind module to KSLITE
          * @return {KSLITE}
          */
-        //����ģ�鵽ϵͳ��
-        //name   ģ����
-        //fn     ģ�����سɹ����ص�
-        //config ��ģ��������, Ӧ����һ������{requires:[xxxx,xxx]} Ҳ����ֱ����һ������  
+        //添加模块到系统中
+        //name   模块名
+        //fn     模块加载成功后回调
+        //config 该模块的配置, 应该是一个对象{requires:[xxxx,xxx]} 也可以直接是一个数组  
         add: function(name, fn, config) {
             var mods = S.Env.mods,
                 mod;
             if (mods[name] && mods[name].status > INIT) {
                 return;
             }
-            //����ģ����״̬
+            //加入模块的状态
             mod = {
                 name: name,
                 fn: fn || null,
                 status: LOADED
             };
 
-            //����config�Ǹ�����, ��дһ��
+            //如果config是个数组, 改写一下
             if (S.iA(config)) {
                 config = {
                     requires: config
                 };
             }
-            //����һ��
+            //混合一下
             mix(mod, config);
-            //��¼
+            //记录
             mods[name] = mod;
             return S;
         },
         /**
          * Start load specific mods, and fire callback when these mods and requires are attached.<br/>
          * S.use('mod-name',function(S){});
-         * @param modNames {String} ��ͬģ�����Զ���(,)�ָ�
-         * @param callback {Function} ���ش��������ɹ����Ļص�����
+         * @param modNames {String} 不同模块间以逗号(,)分隔
+         * @param callback {Function} 相关代码引入成功后的回调函数
          */
 
-        //ʹ��ģ��
-        //modNames:���ŷָ���ģ����
-        //callback : ���سɹ����Ļص�
+        //使用模块
+        //modNames:逗号分隔的模块名
+        //callback : 加载成功后的回调
         use: function(modNames, callback) {
             modNames = modNames.split(',');
             var mods = S.Env.mods;
@@ -424,7 +424,7 @@
             });
         },
 
-        //��������ģ��
+        //批量载入模块
         _aMs: function(modNames, callback) {
             var i, asyncers = {};
             for (i = 0; i < modNames.length; i++) {
@@ -436,7 +436,7 @@
             S.multiAsync(asyncers, callback);
         },
 
-        //����ģ�������߼�
+        //处理模块加载逻辑
         _aM: function(modName, callback) { //require! | noreg mod | cycling require! | name2path! | load queue!
             var mod, requires;
             var mods = S.Env.mods,
@@ -446,9 +446,9 @@
             function attachMod(mod) {
                 if (mod.status != ATTACHED) {
                     if (mod.fn) {
-                        //S.log("attach " + mod.name); //ע�ᣬ�����и���
-                        //ִ��ģ��
-                        //������S�� ���ӵ�ģ�飬 ģ����exports���ӵ���λ��
+                        //S.log("attach " + mod.name); //注册，这里叫附加
+                        //执行模块
+                        //上下文S， 附加的模块， 模块中exports附加到的位置
                         mod.fn(S, S.require(mod.name), S._ns(mod.name));
                     } else {
                         //S.log("attach " + mod.name + " without expected attach fn!", "warn");
@@ -481,9 +481,9 @@
             mod = mods[modName];
             if (mod && mod.status !== INIT) {
                 requires = mod.requires;
-                if (S.iA(requires) && requires.length > 0) { //����ģ��������ģ���Ѿ����ع���
-                    addRelies(mod); //����һ��ģ�������� 
-                    if (rqmap[modName][modName]) { //��ѭ�������� 
+                if (S.iA(requires) && requires.length > 0) { //如果模块存在且模块已经加载过了
+                    addRelies(mod); //处理一下模块的依赖 
+                    if (rqmap[modName][modName]) { //有循环依赖了 
                         throw new Error("Fatal Error,Loop Reqs:" + mod.name);
                     }
                     //S.log(mod.name + " to req: " + requires);
@@ -491,22 +491,22 @@
                         attachMod(mod);
                     });
                 } else {
-                    //ע��ģ��
+                    //注册模块
                     attachMod(mod);
                 }
-            } else { //û��ע����ģ�飬����ע��һ��
+            } else { //没有注册的模块，重新注册一下
                 mod = {
                     name: modName
                 };
                 S._lM(mod, function() {
-                    S._aM(modName, function() { //�ȼ�����ע��
+                    S._aM(modName, function() { //先加载再注册
                         attachMod(mods[modName]);
                     });
                 });
             }
         },
 
-        //���ص���ģ��
+        //加载单个模块
         _lM: function(mod, callback) {
             var lq = S.Env._loadQueue,
                 modName = mod.name,
@@ -551,7 +551,7 @@
             }
         },
 
-        //����һ��ģ����Ӧ�ĵ�ַ
+        //返回一个模块对应的地址
         path: function(s, callback) {
             var pa = s.split("-"),
                 pkgname = pa[0],
@@ -569,7 +569,7 @@
             }*/
         },
 
-        //����ģ����ȫ·��������ʱ����
+        //处理模块的全路径，带有时间戳
         _gPath: function(mod, fn) {
             S.path(mod.name, function(path, pkg) {
                 mod.fullpath = path + ".js?_t=" + sconfig.timestamp + ".js";
@@ -582,7 +582,7 @@
         multiAsync: function(asyncers, callback) {
             var ctx, k, hasAsyncer = false;
 
-            function isAllComplete() { //�����Ƿ����е��첽��ִ������
+            function isAllComplete() { //检查是否所有的异步都执行完成
                 var k, ro = {};
                 for (k in asyncers) {
                     if (!asyncers[k].c) {
@@ -590,14 +590,14 @@
                     }
                     ro[k] = asyncers[k].r;
                 }
-                callback(ro); //�����ɺ󣬰ѽ����ռ�������һ�£����ɻص�
+                callback(ro); //都完成后，把结果收集并整理一下，完成回调
             }
-            //ֻ�е�asyncers�ж���ʱ�ż���
+            //只有当asyncers有对象时才继续
             for (k in asyncers) {
                 hasAsyncer = true;
             }
 
-            //ֱ�ӷ���һ���ն���
+            //直接返回一个空对象
             if (!hasAsyncer) {
                 callback({});
             }
@@ -630,22 +630,22 @@
             return modRoot.exports;
         },
 
-        //����һ��ģ��
+        //声明一个模块
         declare: function() {
             var interactiveScript, i, arg, id, depsArr, modFactory;
-            //��������
+            //遍历参数
             for (i = 0; i < arguments.length; i++) {
                 arg = arguments[i];
-                if (S.iS(arg)) { //�ַ�����Ϊģ��id
+                if (S.iS(arg)) { //字符串作为模块id
                     id = arg;
-                } else if (S.iA(arg)) { //������Ϊģ������
+                } else if (S.iA(arg)) { //数组作为模块依赖
                     depsArr = arg;
-                } else if (S.iF(arg)) { //������Ϊģ���Ĺ��캯��
+                } else if (S.iF(arg)) { //函数作为模块的构造函数
                     modFactory = arg;
                 }
             }
 
-            if (!id) { //Լ����ֹû��id������
+            if (!id) { //约定禁止没有id的情况
                 return;
             }
 
@@ -653,7 +653,7 @@
                 modFactory(S.require, exports, exportsParent);
             }, depsArr);
         },
-        //��������ʽʹ��ģ��
+        //以数组形式使用模块
         provide: function(modsArr, fn) {
             S.use(modsArr.join(","), function(S) {
                 fn(S.require);
@@ -661,21 +661,21 @@
         }
     });
 
-    //����ksliteģ��
+    //声明kslite模块
     S.declare("kslite", [], function(require, exports) {
-        //ֻ�������������еķ���
+        //只导出最后数组中的方法
         exports = S.mix(exports, S, true, ["path", "log", "getScript", "substitute", "clone", "mix", "multiAsync", "extend", "iA", "iF", "iPO", "iS"]);
     });
 
-    //ʹ��һ��, logһ���Ѿ���������
+    //使用一下, log一下已经加载完成
     S.provide(["kslite"], function(require) {
         S.require("kslite").log("kslite inited");
     });
 
 
     //pkg
-    //����ģ��·��
-    //ģ����@ģ��·��@ģ������
+    //增加模块路径
+    //模块名@模块路径@模块编码
     function addPath(s) {
         if (S.iS(kslite_pkgpaths[i])) {
             var pp = s.split("@");
@@ -690,15 +690,15 @@
 
     var kslite_pkgpaths = win.KSLITEpkgPaths;
 
-    //��¶��һ��ȫ�ַ�������KSLITE�������ɺ��ĵ���
+    //暴露出一个全局方法增加KSLITE加载完成后的调用
     win.KSLITEpkgPaths = {
         push: function(s) {
             addPath(s);
         }
     };
 
-    //��������ǰ�Ѿ�����kslite_pkgpaths��Ϊһ������
-    //�����Ǽӵ�·����
+    //如果加载前已经存在kslite_pkgpaths且为一个数组
+    //把它们加到路径里
     if (kslite_pkgpaths && S.iA(kslite_pkgpaths)) {
         for (i = 0; i < kslite_pkgpaths.length; i++) {
             addPath(kslite_pkgpaths[i]);
@@ -708,7 +708,7 @@
     var ksLoadKey = 'KSLITEonLoad';
     var kslite_onload = win[ksLoadKey];
 
-    //��¶��һ��ȫ�ַ�������KSLITE�������ɺ��ĵ���
+    //暴露出一个全局方法增加KSLITE加载完成后的调用
     win[ksLoadKey] = {
         push: function(fn) {
             if (fn && S.iF(fn)) {
@@ -717,8 +717,8 @@
         }
     };
 
-    //�����ű�����֮ǰ�Ѿ�������onload��������������
-    //��KSLITE��Ϊ��������
+    //如果脚本加载之前已经定义了onload，并且它是数组
+    //把KSLITE作为参数传入
     if (kslite_onload && S.iA(kslite_onload)) {
         for (i = 0; i < kslite_onload.length; i++) {
             win[ksLoadKey].push(kslite_onload[i]);

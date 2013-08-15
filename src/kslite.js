@@ -1,22 +1,22 @@
 /**
  * KISSY -- An Enjoyable UI Library : Keep It Simple & Stupid, Short & Sweet, Slim & Sexy...<br/>
- * KSLITE -- KISSYµÄ×Ó¼¯,Í¨¹ı¾«¼ò¹ıµÄÓĞÏŞµÄ·½·¨,Ìá¹©Ä£¿é¹ÜÀí,OOÖ§³ÖµÈ»ù±¾¹¦ÄÜ
+ * KSLITE -- KISSYçš„å­é›†,é€šè¿‡ç²¾ç®€è¿‡çš„æœ‰é™çš„æ–¹æ³•,æä¾›æ¨¡å—ç®¡ç†,OOæ”¯æŒç­‰åŸºæœ¬åŠŸèƒ½
  * @module kslite
  * @author lifesinger@gmail.com,limu@taobao.com
  * @modify by hubo.hb@alibaba-inc.com 
  */
 
 (function(win, S, undefined) {
-    //KSLITEÃ»ÓĞ¶¨ÒåµÄÊ±ºò
-    //ÒÑ¾­¶¨ÒåµÄÊ±ºò²»ÔÙ´¦Àí
+    //KSLITEæ²¡æœ‰å®šä¹‰çš„æ—¶å€™
+    //å·²ç»å®šä¹‰çš„æ—¶å€™ä¸å†å¤„ç†
     if (win[S] === undefined) {
-        //SÖØÖÃÎª¶ÔÏó
+        //Sé‡ç½®ä¸ºå¯¹è±¡
         S = win[S] = {};
     } else {
         return;
     }
 
-    //¿ì½İ¶ÔÏó
+    //å¿«æ·å¯¹è±¡
     var doc = win.document;
     var toString = Object.prototype.toString;
     var i;
@@ -30,10 +30,10 @@
     /**
      * Copies all the properties of s to r.
      * @method mix
-     * @param r {Object} Ä¿±ê¶ÔÏó
-     * @param s {Object} Ô´¶ÔÏó
-     * @param ov {Boolean} ÊÇ·ñÇ¿ÖÆ¸²¸Ç
-     * @param wl {Array} Èç¹û´æÔÚ°×Ãûµ¥,Ö»¸²¸Ç°×Ãûµ¥ÄÚµÄ¶ÔÏó.
+     * @param r {Object} ç›®æ ‡å¯¹è±¡
+     * @param s {Object} æºå¯¹è±¡
+     * @param ov {Boolean} æ˜¯å¦å¼ºåˆ¶è¦†ç›–
+     * @param wl {Array} å¦‚æœå­˜åœ¨ç™½åå•,åªè¦†ç›–ç™½åå•å†…çš„å¯¹è±¡.
      * @return {Object} the augmented object
      */
     var mix = function(r, s, ov, wl) {
@@ -63,11 +63,11 @@
         return r;
     };
 
-    //¿ì½İ·½·¨£¬×¼±¸²åÈëÔªËØµÄ½Úµã 
-    var gbt = 'getElementsByTagName'; //×Ö·û´®Ôİ´æ,·½±ãÑ¹Ëõ
+    //å¿«æ·æ–¹æ³•ï¼Œå‡†å¤‡æ’å…¥å…ƒç´ çš„èŠ‚ç‚¹ 
+    var gbt = 'getElementsByTagName'; //å­—ç¬¦ä¸²æš‚å­˜,æ–¹ä¾¿å‹ç¼©
     var head = doc[gbt]('head')[0] || doc.documentElement;
 
-    //¶¨Òå¼¸¸öÄ£¿éµÄ×´Ì¬
+    //å®šä¹‰å‡ ä¸ªæ¨¡å—çš„çŠ¶æ€
     var INIT = 0;
     var LOADING = 1;
     var LOADED = 2;
@@ -75,7 +75,7 @@
     var ATTACHED = 4;
     var RE_CSS = /\.css(?:\?|$)/i;
 
-    //½Å±¾¼ÓÔØµÄ»Øµ÷º¯Êı£¬ IEÏÂ´¦ÀíreadyState£¬ĞèÒªÍ¬Ê±´¦ÀíloadedºÍcompleteÁ½ÖÖ×´Ì¬
+    //è„šæœ¬åŠ è½½çš„å›è°ƒå‡½æ•°ï¼Œ IEä¸‹å¤„ç†readyStateï¼Œéœ€è¦åŒæ—¶å¤„ç†loadedå’Œcompleteä¸¤ç§çŠ¶æ€
     var scriptOnload = function(node, callback) {
         var re = /^(?:loaded|complete|undefined)$/;
         /*
@@ -99,7 +99,7 @@
     };
 
 
-    //»ñÈ¡µÚÒ»¸ö¿ÉÒÔ½»»¥µÄ½Å±¾
+    //è·å–ç¬¬ä¸€ä¸ªå¯ä»¥äº¤äº’çš„è„šæœ¬
     //IE only
 
     function getInteractiveScript() {
@@ -121,8 +121,8 @@
     var scripts = doc[gbt]('script');
     var ksCurKey = 'KSLITEcurrentScript';
 
-    //ÊÔÍ¼Í¨¹ıscriptÉÏµÄksliteÊôĞÔÀ´ÕÒµ½µ±Ç°ksliteÊ¹ÓÃµÄ½Å±¾
-    //ÕâĞèÒªÔÚscript±êÇ©ÉÏĞ´ksliteÊôĞÔ
+    //è¯•å›¾é€šè¿‡scriptä¸Šçš„ksliteå±æ€§æ¥æ‰¾åˆ°å½“å‰ksliteä½¿ç”¨çš„è„šæœ¬
+    //è¿™éœ€è¦åœ¨scriptæ ‡ç­¾ä¸Šå†™ksliteå±æ€§
     if (!win[ksCurKey]) {
         for (i = 0; i < scripts.length; i++) {
             if (scripts[i].kslite) {
@@ -132,7 +132,7 @@
         }
     }
 
-    //ÕâÀïÈ¡µ½µÄbase¿ÉÄÜ»áÓĞÎÊÌâ£¬ ±ÈÈçÒì²½µÄÊ±ºò, ËùÒÔ×îºÃ»¹ÊÇĞ´ÔÚscriptµÄÊôĞÔÉÏ
+    //è¿™é‡Œå–åˆ°çš„baseå¯èƒ½ä¼šæœ‰é—®é¢˜ï¼Œ æ¯”å¦‚å¼‚æ­¥çš„æ—¶å€™, æ‰€ä»¥æœ€å¥½è¿˜æ˜¯å†™åœ¨scriptçš„å±æ€§ä¸Š
     win[ksCurKey] = (win[ksCurKey] || scripts[scripts.length - 1]);
 
     S.Env = {
@@ -145,20 +145,20 @@
         }
     };
 
-    //Ä¬ÈÏÅäÖÃ
+    //é»˜è®¤é…ç½®
     S.Config = {
         debug: false,
         base: (win[ksCurKey].src).split("/").slice(0, -1).join("/") + "/",
         timeout: 10,
         charset: 'gbk',
-        lt_pkgs : {}, //»º´æ°ü¶ÔÏó
-        timestamp: win.KSLITEtimestamp || '{timestamp}' //timestamp»á±»Ìæ»»
+        lt_pkgs : {}, //ç¼“å­˜åŒ…å¯¹è±¡
+        timestamp: win.KSLITEtimestamp || '{timestamp}' //timestampä¼šè¢«æ›¿æ¢
     };
 
-    //Ôİ´æ£¬·½±ãÑ¹Ëõ
+    //æš‚å­˜ï¼Œæ–¹ä¾¿å‹ç¼©
     var sconfig = S.Config;
 
-    //debugĞÅÏ¢
+    //debugä¿¡æ¯
     if (/demo|debug|test/.test(location.href)) {
         sconfig.debug = true;
     }
@@ -167,11 +167,11 @@
         sconfig.timestamp = (new Date()).getTime() + ".js";
     }
 
-    //Ìí¼Ókslite·½·¨
+    //æ·»åŠ ksliteæ–¹æ³•
     mix(S, {
-        //ksliteµÄ°æ±¾ºÅ
-        version: "{version}", //version»á±»Ìæ»»
-        //´æÒ»ÏÂ¿ì½İ·½Ê½
+        //ksliteçš„ç‰ˆæœ¬å·
+        version: "{version}", //versionä¼šè¢«æ›¿æ¢
+        //å­˜ä¸€ä¸‹å¿«æ·æ–¹å¼
         mix: mix,
         /**
          * Prints debug info.
@@ -191,10 +191,10 @@
         /**
          * Clone Object
          * @method clone
-         * @param o {Object} Ô´¶ÔÏó
+         * @param o {Object} æºå¯¹è±¡
          * @return {Object} the object cloned
          */
-        //¿ËÂ¡³ö¶ÔÏóo, Èç¹ûÊÇÊı×é»òÕß¶ÔÏó£¬Í¬Ê±¸´ÖÆ×Ó¶ÔÏó
+        //å…‹éš†å‡ºå¯¹è±¡o, å¦‚æœæ˜¯æ•°ç»„æˆ–è€…å¯¹è±¡ï¼ŒåŒæ—¶å¤åˆ¶å­å¯¹è±¡
         clone: function(o) {
             var ret = o,
                 b, k;
@@ -220,11 +220,11 @@
          * @return r {Object}
          */
 
-        //Ô­ĞÍ¼Ì³Ğ
-        //r ×ÓÀà
-        //s ¸¸Àà
-        //px ¸ø×ÓÀàÌí¼ÓµÄÔ­ĞÍ·½·¨¼¯ºÏ
-        //sx ¸ø×ÓÀàÌí¼ÓµÄ¾²Ì¬·½·¨
+        //åŸå‹ç»§æ‰¿
+        //r å­ç±»
+        //s çˆ¶ç±»
+        //px ç»™å­ç±»æ·»åŠ çš„åŸå‹æ–¹æ³•é›†åˆ
+        //sx ç»™å­ç±»æ·»åŠ çš„é™æ€æ–¹æ³•
         extend: function(r, s, px, sx) {
             if (!s || !r) {
                 return r;
@@ -237,21 +237,21 @@
             };
             var sp = s.prototype;
             var rp = O(sp);
-            //¿½±´Ô­ĞÍ
+            //æ‹·è´åŸå‹
             r.prototype = rp;
-            //ĞŞÕıconstructor
+            //ä¿®æ­£constructor
             rp.constructor = r;
-            //ÉèÖÃsuperclass, ·½±ã×ÓÀà²éÕÒ
+            //è®¾ç½®superclass, æ–¹ä¾¿å­ç±»æŸ¥æ‰¾
             r.superclass = sp;
-            //Èç¹ûsÊÇÒ»¸ö¶ÔÏó£¬ÉèÖÃspµÄconstructorÎªËü×Ô¼º
+            //å¦‚æœsæ˜¯ä¸€ä¸ªå¯¹è±¡ï¼Œè®¾ç½®spçš„constructorä¸ºå®ƒè‡ªå·±
             if (s !== Object && sp.constructor === OP.constructor) {
                 sp.constructor = s;
             }
-            //¸ø×ÓÀà¼ÓÔ­ĞÍ·½·¨
+            //ç»™å­ç±»åŠ åŸå‹æ–¹æ³•
             if (px) {
                 mix(rp, px);
             }
-            //¸ø×ÓÀà¼Ó¾²Ì¬·½·¨
+            //ç»™å­ç±»åŠ é™æ€æ–¹æ³•
             if (sx) {
                 mix(r, sx);
             }
@@ -260,10 +260,10 @@
         /**
          * Substitutes keywords in a string using an object/array.
          * Removes undefined keywords and ignores escaped keywords.
-         * @param str {String}Ä£°å×Ö·û´®
-         * @param o {String}Ä£°åÊı¾İ
-         * @param regexp {String}Ìæ»»ÓÃÕıÔò ¿ÉÒÔÓÃÀ´´úÌæÄ¬ÈÏÖµ
-         * @param multiSubstitute {Boolean} ÊÇ·ñÖ§³Ö¶à´Îsubstitute Îªtrue,strÖĞµÄÄ£°åÈç¹ûÆ¥Åä²»µ½½«±»±£Áô¶ø²»ÊÇÖÃ¿Õ.
+         * @param str {String}æ¨¡æ¿å­—ç¬¦ä¸²
+         * @param o {String}æ¨¡æ¿æ•°æ®
+         * @param regexp {String}æ›¿æ¢ç”¨æ­£åˆ™ å¯ä»¥ç”¨æ¥ä»£æ›¿é»˜è®¤å€¼
+         * @param multiSubstitute {Boolean} æ˜¯å¦æ”¯æŒå¤šæ¬¡substitute ä¸ºtrue,strä¸­çš„æ¨¡æ¿å¦‚æœåŒ¹é…ä¸åˆ°å°†è¢«ä¿ç•™è€Œä¸æ˜¯ç½®ç©º.
          */
         substitute: function(str, o, regexp, multiSubstitute) {
             if (!S.iS(str) || !S.iPO(o)) {
@@ -288,9 +288,9 @@
          *      timeout: number
          *  });
          * </pre>
-         * @param url {String} ÎÄ¼şµØÖ·
-         * @param success {Function|Object} »Øµ÷º¯Êı
-         * @param charset {String} ×Ö·û´®
+         * @param url {String} æ–‡ä»¶åœ°å€
+         * @param success {Function|Object} å›è°ƒå‡½æ•°
+         * @param charset {String} å­—ç¬¦ä¸²
          */
         getScript: function(url, success, charset, expando) {
             var isCSS = RE_CSS.test(url),
@@ -308,7 +308,7 @@
                 }
             }
 
-            //·ÀÖ¹IEÏÂcharsetÊôĞÔÔÚºóÃæµ¼ÖÂ²»ÉúĞ§
+            //é˜²æ­¢IEä¸‹charsetå±æ€§åœ¨åé¢å¯¼è‡´ä¸ç”Ÿæ•ˆ
             if (charset) {
                 node.charset = charset;
             }
@@ -352,19 +352,19 @@
             return node;
         },
 
-        //¹¤¾ßº¯Êı ÊÇ·ñÎªº¯Êı
+        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºå‡½æ•°
         iF: isType('Function'),
 
-        //¹¤¾ßº¯Êı ÊÇ·ñÎªÊı×é
+        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºæ•°ç»„
         iA: isType('Array'),
 
-        //¹¤¾ßº¯Êı ÊÇ·ñÎª×Ö·û´®
+        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºå­—ç¬¦ä¸²
         iS: isType('String'),
 
-        //¹¤¾ßº¯Êı ÊÇ·ñÎª¶ÔÏó
+        //å·¥å…·å‡½æ•° æ˜¯å¦ä¸ºå¯¹è±¡
         iO: isType('Object'),
 
-        //ÊÇ·ñÎª´¿¶ÔÏó, ÅÅ³ıdom½Úµã¼°window
+        //æ˜¯å¦ä¸ºçº¯å¯¹è±¡, æ’é™¤domèŠ‚ç‚¹åŠwindow
         iPO: function(o) {
             return o && S.iO(o) && !o.nodeType && !o.setInterval;
         },
@@ -375,45 +375,45 @@
          * @param fn {Function} entry point into the module that is used to bind module to KSLITE
          * @return {KSLITE}
          */
-        //Ìí¼ÓÄ£¿éµ½ÏµÍ³ÖĞ
-        //name   Ä£¿éÃû
-        //fn     Ä£¿é¼ÓÔØ³É¹¦ºó»Øµ÷
-        //config ¸ÃÄ£¿éµÄÅäÖÃ, Ó¦¸ÃÊÇÒ»¸ö¶ÔÏó{requires:[xxxx,xxx]} Ò²¿ÉÒÔÖ±½ÓÊÇÒ»¸öÊı×é  
+        //æ·»åŠ æ¨¡å—åˆ°ç³»ç»Ÿä¸­
+        //name   æ¨¡å—å
+        //fn     æ¨¡å—åŠ è½½æˆåŠŸåå›è°ƒ
+        //config è¯¥æ¨¡å—çš„é…ç½®, åº”è¯¥æ˜¯ä¸€ä¸ªå¯¹è±¡{requires:[xxxx,xxx]} ä¹Ÿå¯ä»¥ç›´æ¥æ˜¯ä¸€ä¸ªæ•°ç»„  
         add: function(name, fn, config) {
             var mods = S.Env.mods,
                 mod;
             if (mods[name] && mods[name].status > INIT) {
                 return;
             }
-            //¼ÓÈëÄ£¿éµÄ×´Ì¬
+            //åŠ å…¥æ¨¡å—çš„çŠ¶æ€
             mod = {
                 name: name,
                 fn: fn || null,
                 status: LOADED
             };
 
-            //Èç¹ûconfigÊÇ¸öÊı×é, ¸ÄĞ´Ò»ÏÂ
+            //å¦‚æœconfigæ˜¯ä¸ªæ•°ç»„, æ”¹å†™ä¸€ä¸‹
             if (S.iA(config)) {
                 config = {
                     requires: config
                 };
             }
-            //»ìºÏÒ»ÏÂ
+            //æ··åˆä¸€ä¸‹
             mix(mod, config);
-            //¼ÇÂ¼
+            //è®°å½•
             mods[name] = mod;
             return S;
         },
         /**
          * Start load specific mods, and fire callback when these mods and requires are attached.<br/>
          * S.use('mod-name',function(S){});
-         * @param modNames {String} ²»Í¬Ä£¿é¼äÒÔ¶ººÅ(,)·Ö¸ô
-         * @param callback {Function} Ïà¹Ø´úÂëÒıÈë³É¹¦ºóµÄ»Øµ÷º¯Êı
+         * @param modNames {String} ä¸åŒæ¨¡å—é—´ä»¥é€—å·(,)åˆ†éš”
+         * @param callback {Function} ç›¸å…³ä»£ç å¼•å…¥æˆåŠŸåçš„å›è°ƒå‡½æ•°
          */
 
-        //Ê¹ÓÃÄ£¿é
-        //modNames:¶ººÅ·Ö¸ôµÄÄ£¿éÃû
-        //callback : ¼ÓÔØ³É¹¦ºóµÄ»Øµ÷
+        //ä½¿ç”¨æ¨¡å—
+        //modNames:é€—å·åˆ†éš”çš„æ¨¡å—å
+        //callback : åŠ è½½æˆåŠŸåçš„å›è°ƒ
         use: function(modNames, callback) {
             modNames = modNames.split(',');
             var mods = S.Env.mods;
@@ -424,7 +424,7 @@
             });
         },
 
-        //ÅúÁ¿ÔØÈëÄ£¿é
+        //æ‰¹é‡è½½å…¥æ¨¡å—
         _aMs: function(modNames, callback) {
             var i, asyncers = {};
             for (i = 0; i < modNames.length; i++) {
@@ -436,7 +436,7 @@
             S.multiAsync(asyncers, callback);
         },
 
-        //´¦ÀíÄ£¿é¼ÓÔØÂß¼­
+        //å¤„ç†æ¨¡å—åŠ è½½é€»è¾‘
         _aM: function(modName, callback) { //require! | noreg mod | cycling require! | name2path! | load queue!
             var mod, requires;
             var mods = S.Env.mods,
@@ -446,9 +446,9 @@
             function attachMod(mod) {
                 if (mod.status != ATTACHED) {
                     if (mod.fn) {
-                        //S.log("attach " + mod.name); //×¢²á£¬ÕâÀï½Ğ¸½¼Ó
-                        //Ö´ĞĞÄ£¿é
-                        //ÉÏÏÂÎÄS£¬ ¸½¼ÓµÄÄ£¿é£¬ Ä£¿éÖĞexports¸½¼Óµ½µÄÎ»ÖÃ
+                        //S.log("attach " + mod.name); //æ³¨å†Œï¼Œè¿™é‡Œå«é™„åŠ 
+                        //æ‰§è¡Œæ¨¡å—
+                        //ä¸Šä¸‹æ–‡Sï¼Œ é™„åŠ çš„æ¨¡å—ï¼Œ æ¨¡å—ä¸­exportsé™„åŠ åˆ°çš„ä½ç½®
                         mod.fn(S, S.require(mod.name), S._ns(mod.name));
                     } else {
                         //S.log("attach " + mod.name + " without expected attach fn!", "warn");
@@ -481,9 +481,9 @@
             mod = mods[modName];
             if (mod && mod.status !== INIT) {
                 requires = mod.requires;
-                if (S.iA(requires) && requires.length > 0) { //Èç¹ûÄ£¿é´æÔÚÇÒÄ£¿éÒÑ¾­¼ÓÔØ¹ıÁË
-                    addRelies(mod); //´¦ÀíÒ»ÏÂÄ£¿éµÄÒÀÀµ 
-                    if (rqmap[modName][modName]) { //ÓĞÑ­»·ÒÀÀµÁË 
+                if (S.iA(requires) && requires.length > 0) { //å¦‚æœæ¨¡å—å­˜åœ¨ä¸”æ¨¡å—å·²ç»åŠ è½½è¿‡äº†
+                    addRelies(mod); //å¤„ç†ä¸€ä¸‹æ¨¡å—çš„ä¾èµ– 
+                    if (rqmap[modName][modName]) { //æœ‰å¾ªç¯ä¾èµ–äº† 
                         throw new Error("Fatal Error,Loop Reqs:" + mod.name);
                     }
                     //S.log(mod.name + " to req: " + requires);
@@ -491,22 +491,22 @@
                         attachMod(mod);
                     });
                 } else {
-                    //×¢²áÄ£¿é
+                    //æ³¨å†Œæ¨¡å—
                     attachMod(mod);
                 }
-            } else { //Ã»ÓĞ×¢²áµÄÄ£¿é£¬ÖØĞÂ×¢²áÒ»ÏÂ
+            } else { //æ²¡æœ‰æ³¨å†Œçš„æ¨¡å—ï¼Œé‡æ–°æ³¨å†Œä¸€ä¸‹
                 mod = {
                     name: modName
                 };
                 S._lM(mod, function() {
-                    S._aM(modName, function() { //ÏÈ¼ÓÔØÔÙ×¢²á
+                    S._aM(modName, function() { //å…ˆåŠ è½½å†æ³¨å†Œ
                         attachMod(mods[modName]);
                     });
                 });
             }
         },
 
-        //¼ÓÔØµ¥¸öÄ£¿é
+        //åŠ è½½å•ä¸ªæ¨¡å—
         _lM: function(mod, callback) {
             var lq = S.Env._loadQueue,
                 modName = mod.name,
@@ -551,7 +551,7 @@
             }
         },
 
-        //·µ»ØÒ»¸öÄ£¿é¶ÔÓ¦µÄµØÖ·
+        //è¿”å›ä¸€ä¸ªæ¨¡å—å¯¹åº”çš„åœ°å€
         path: function(s, callback) {
             var pa = s.split("-"),
                 pkgname = pa[0],
@@ -569,7 +569,7 @@
             }*/
         },
 
-        //´¦ÀíÄ£¿éµÄÈ«Â·¾¶£¬´øÓĞÊ±¼ä´Á
+        //å¤„ç†æ¨¡å—çš„å…¨è·¯å¾„ï¼Œå¸¦æœ‰æ—¶é—´æˆ³
         _gPath: function(mod, fn) {
             S.path(mod.name, function(path, pkg) {
                 mod.fullpath = path + ".js?_t=" + sconfig.timestamp + ".js";
@@ -582,7 +582,7 @@
         multiAsync: function(asyncers, callback) {
             var ctx, k, hasAsyncer = false;
 
-            function isAllComplete() { //¼ì²éÊÇ·ñËùÓĞµÄÒì²½¶¼Ö´ĞĞÍê³É
+            function isAllComplete() { //æ£€æŸ¥æ˜¯å¦æ‰€æœ‰çš„å¼‚æ­¥éƒ½æ‰§è¡Œå®Œæˆ
                 var k, ro = {};
                 for (k in asyncers) {
                     if (!asyncers[k].c) {
@@ -590,14 +590,14 @@
                     }
                     ro[k] = asyncers[k].r;
                 }
-                callback(ro); //¶¼Íê³Éºó£¬°Ñ½á¹ûÊÕ¼¯²¢ÕûÀíÒ»ÏÂ£¬Íê³É»Øµ÷
+                callback(ro); //éƒ½å®Œæˆåï¼ŒæŠŠç»“æœæ”¶é›†å¹¶æ•´ç†ä¸€ä¸‹ï¼Œå®Œæˆå›è°ƒ
             }
-            //Ö»ÓĞµ±asyncersÓĞ¶ÔÏóÊ±²Å¼ÌĞø
+            //åªæœ‰å½“asyncersæœ‰å¯¹è±¡æ—¶æ‰ç»§ç»­
             for (k in asyncers) {
                 hasAsyncer = true;
             }
 
-            //Ö±½Ó·µ»ØÒ»¸ö¿Õ¶ÔÏó
+            //ç›´æ¥è¿”å›ä¸€ä¸ªç©ºå¯¹è±¡
             if (!hasAsyncer) {
                 callback({});
             }
@@ -630,22 +630,22 @@
             return modRoot.exports;
         },
 
-        //ÉùÃ÷Ò»¸öÄ£¿é
+        //å£°æ˜ä¸€ä¸ªæ¨¡å—
         declare: function() {
             var interactiveScript, i, arg, id, depsArr, modFactory;
-            //±éÀú²ÎÊı
+            //éå†å‚æ•°
             for (i = 0; i < arguments.length; i++) {
                 arg = arguments[i];
-                if (S.iS(arg)) { //×Ö·û´®×÷ÎªÄ£¿éid
+                if (S.iS(arg)) { //å­—ç¬¦ä¸²ä½œä¸ºæ¨¡å—id
                     id = arg;
-                } else if (S.iA(arg)) { //Êı×é×÷ÎªÄ£¿éÒÀÀµ
+                } else if (S.iA(arg)) { //æ•°ç»„ä½œä¸ºæ¨¡å—ä¾èµ–
                     depsArr = arg;
-                } else if (S.iF(arg)) { //º¯Êı×÷ÎªÄ£¿éµÄ¹¹Ôìº¯Êı
+                } else if (S.iF(arg)) { //å‡½æ•°ä½œä¸ºæ¨¡å—çš„æ„é€ å‡½æ•°
                     modFactory = arg;
                 }
             }
 
-            if (!id) { //Ô¼¶¨½ûÖ¹Ã»ÓĞidµÄÇé¿ö
+            if (!id) { //çº¦å®šç¦æ­¢æ²¡æœ‰idçš„æƒ…å†µ
                 return;
             }
 
@@ -653,7 +653,7 @@
                 modFactory(S.require, exports, exportsParent);
             }, depsArr);
         },
-        //ÒÔÊı×éĞÎÊ½Ê¹ÓÃÄ£¿é
+        //ä»¥æ•°ç»„å½¢å¼ä½¿ç”¨æ¨¡å—
         provide: function(modsArr, fn) {
             S.use(modsArr.join(","), function(S) {
                 fn(S.require);
@@ -661,21 +661,21 @@
         }
     });
 
-    //ÉùÃ÷ksliteÄ£¿é
+    //å£°æ˜ksliteæ¨¡å—
     S.declare("kslite", [], function(require, exports) {
-        //Ö»µ¼³ö×îºóÊı×éÖĞµÄ·½·¨
+        //åªå¯¼å‡ºæœ€åæ•°ç»„ä¸­çš„æ–¹æ³•
         exports = S.mix(exports, S, true, ["path", "log", "getScript", "substitute", "clone", "mix", "multiAsync", "extend", "iA", "iF", "iPO", "iS"]);
     });
 
-    //Ê¹ÓÃÒ»ÏÂ, logÒ»ÏÂÒÑ¾­¼ÓÔØÍê³É
+    //ä½¿ç”¨ä¸€ä¸‹, logä¸€ä¸‹å·²ç»åŠ è½½å®Œæˆ
     S.provide(["kslite"], function(require) {
         S.require("kslite").log("kslite inited");
     });
 
 
     //pkg
-    //Ôö¼ÓÄ£¿éÂ·¾¶
-    //Ä£¿éÃû@Ä£¿éÂ·¾¶@Ä£¿é±àÂë
+    //å¢åŠ æ¨¡å—è·¯å¾„
+    //æ¨¡å—å@æ¨¡å—è·¯å¾„@æ¨¡å—ç¼–ç 
     function addPath(s) {
         if (S.iS(kslite_pkgpaths[i])) {
             var pp = s.split("@");
@@ -690,15 +690,15 @@
 
     var kslite_pkgpaths = win.KSLITEpkgPaths;
 
-    //±©Â¶³öÒ»¸öÈ«¾Ö·½·¨Ôö¼ÓKSLITE¼ÓÔØÍê³ÉºóµÄµ÷ÓÃ
+    //æš´éœ²å‡ºä¸€ä¸ªå…¨å±€æ–¹æ³•å¢åŠ KSLITEåŠ è½½å®Œæˆåçš„è°ƒç”¨
     win.KSLITEpkgPaths = {
         push: function(s) {
             addPath(s);
         }
     };
 
-    //Èç¹û¼ÓÔØÇ°ÒÑ¾­´æÔÚkslite_pkgpathsÇÒÎªÒ»¸öÊı×é
-    //°ÑËüÃÇ¼Óµ½Â·¾¶Àï
+    //å¦‚æœåŠ è½½å‰å·²ç»å­˜åœ¨kslite_pkgpathsä¸”ä¸ºä¸€ä¸ªæ•°ç»„
+    //æŠŠå®ƒä»¬åŠ åˆ°è·¯å¾„é‡Œ
     if (kslite_pkgpaths && S.iA(kslite_pkgpaths)) {
         for (i = 0; i < kslite_pkgpaths.length; i++) {
             addPath(kslite_pkgpaths[i]);
@@ -708,7 +708,7 @@
     var ksLoadKey = 'KSLITEonLoad';
     var kslite_onload = win[ksLoadKey];
 
-    //±©Â¶³öÒ»¸öÈ«¾Ö·½·¨Ôö¼ÓKSLITE¼ÓÔØÍê³ÉºóµÄµ÷ÓÃ
+    //æš´éœ²å‡ºä¸€ä¸ªå…¨å±€æ–¹æ³•å¢åŠ KSLITEåŠ è½½å®Œæˆåçš„è°ƒç”¨
     win[ksLoadKey] = {
         push: function(fn) {
             if (fn && S.iF(fn)) {
@@ -717,8 +717,8 @@
         }
     };
 
-    //Èç¹û½Å±¾¼ÓÔØÖ®Ç°ÒÑ¾­¶¨ÒåÁËonload£¬²¢ÇÒËüÊÇÊı×é
-    //°ÑKSLITE×÷Îª²ÎÊı´«Èë
+    //å¦‚æœè„šæœ¬åŠ è½½ä¹‹å‰å·²ç»å®šä¹‰äº†onloadï¼Œå¹¶ä¸”å®ƒæ˜¯æ•°ç»„
+    //æŠŠKSLITEä½œä¸ºå‚æ•°ä¼ å…¥
     if (kslite_onload && S.iA(kslite_onload)) {
         for (i = 0; i < kslite_onload.length; i++) {
             win[ksLoadKey].push(kslite_onload[i]);
