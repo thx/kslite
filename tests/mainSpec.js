@@ -1,28 +1,28 @@
 describe('kslite', function() {
-    describe('¹¤¾ßº¯Êı', function() {
+    describe('å·¥å…·å‡½æ•°', function() {
         describe('log', function() {
-            it('²»»á³ö´í¾Í³É', function() {
+            it('ä¸ä¼šå‡ºé”™å°±æˆ', function() {
                 KSLITE.log(123);
                 expect(1).toBe(1);
             });
         });
 
         describe('iF', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 expect(KSLITE.iF(function() {})).toBe(true);
                 expect(KSLITE.iF({})).toBe(false);
             });
         });
 
         describe('iA', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 expect(KSLITE.iA([])).toBe(true);
                 expect(KSLITE.iA({})).toBe(false);
             });
         });
 
         describe('iO', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 expect(KSLITE.iO({})).toBe(true);
                 expect(KSLITE.iO([])).toBe(false);
                 expect(KSLITE.iO(123)).toBe(false);
@@ -31,7 +31,7 @@ describe('kslite', function() {
         });
 
         describe('iPO', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 expect(KSLITE.iPO({})).toBe(true);
                 expect(KSLITE.iPO(window)).toBe(false);
                 expect(KSLITE.iPO(document.getElementsByTagName('body')[0])).toBe(false);
@@ -42,7 +42,7 @@ describe('kslite', function() {
         });
 
         describe('iS', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 expect(KSLITE.iS({})).toBe(false);
                 expect(KSLITE.iS(window)).toBe(false);
                 expect(KSLITE.iS(document.getElementsByTagName('body')[0])).toBe(false);
@@ -54,7 +54,7 @@ describe('kslite', function() {
 
 
         describe('clone', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 var a = {
                     a: 1,
                     b: 2
@@ -72,7 +72,7 @@ describe('kslite', function() {
         });
 
         describe('mix', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 var foo = {
                     a: 1,
                     b: 2
@@ -100,7 +100,7 @@ describe('kslite', function() {
         });
 
         describe('substitute', function() {
-            it('º¯ÊıÅĞ¶ÏÕı³£', function() {
+            it('å‡½æ•°åˆ¤æ–­æ­£å¸¸', function() {
                 var tmpl = "iam {a}, heis{b}";
                 var tmpl1 = "iam {{a}}, heis{{b}}";
                 var tmpl2 = "iam {a}, heis{b},{c}";
@@ -117,7 +117,7 @@ describe('kslite', function() {
         });
 
         describe('extend', function() {
-            it('º¯Êı¹¦ÄÜÕı³£', function() {
+            it('å‡½æ•°åŠŸèƒ½æ­£å¸¸', function() {
 
                 function Person(name) {
                     this.init(name);
@@ -152,20 +152,20 @@ describe('kslite', function() {
 
                 expect((s1 instanceof Person)).toEqual(true);
                 expect((s1 instanceof Stuff)).toEqual(true);
-                expect((s1.constructor.name)).toBe('Stuff');
+                expect((s1.constructor)).toEqual(Stuff);
             });
 
         });
 
     });
 
-    describe('È«¾ÖÅäÖÃ', function() {
+    describe('å…¨å±€é…ç½®', function() {
         describe('KSLITEonLoad', function() {
-            it('ÇëÇó³É¹¦ºó»Øµ÷', function() {
+            it('è¯·æ±‚æˆåŠŸåå›è°ƒ', function() {
                 expect(window.testksliteonload).toBe(1);
             });
 
-            it('ÇëÇó³É¹¦ºóÔÙ´ÎÇëÇóÖ±½ÓĞŞ¸Ä', function() {
+            it('è¯·æ±‚æˆåŠŸåå†æ¬¡è¯·æ±‚ç›´æ¥ä¿®æ”¹', function() {
                 KSLITEonLoad.push(function() {
                     window.testksliteonload = 2;
                 });
@@ -175,7 +175,7 @@ describe('kslite', function() {
         });
 
         describe('KSLITEpkgPaths', function() {
-            it('Ìí¼Ó°üÂ·¾¶', function() {
+            it('æ·»åŠ åŒ…è·¯å¾„', function() {
                 KSLITE.path('tanxssp', function(p, pkg) {
                     expect(p).toEqual('http://cdn.tanx.com/t/tanxssp');
                     expect(pkg).toEqual({
@@ -195,7 +195,7 @@ describe('kslite', function() {
         });
 
         describe('KSLITEtimestamp', function() {
-            it('ÇëÇóµÄÂ·¾¶ÉÏÓĞÊ±¼ä´Á', function() {
+            it('è¯·æ±‚çš„è·¯å¾„ä¸Šæœ‰æ—¶é—´æˆ³', function() {
                 // KSLITE._gPath('test', function(s){
                 //     console.log(s);
                 // })
