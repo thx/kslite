@@ -1,8 +1,7 @@
-## 本地测试需要安装totoro-server
+## 本地测试使用的是karma
 
 ```
-sudo npm install totoro-server -g
-totoro-server --server-host 127.0.0.1
+sudo npm install -g karma
 ```
 
 grunt会默认启动totoro-server，然后每次文件改变会
