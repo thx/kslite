@@ -1,6 +1,8 @@
 ﻿# kslite
 kslite是一个短小精悍的模块管理程序。
 
+
+
 ## 包和模块管理：
 模块名由包名，路径，文件名。三部分构成
 如 `{packagename}-{path_0}-...-{path_n}-{filename}`
@@ -209,3 +211,30 @@ KSLITEpkgPaths.push({
 ```
 
 ### KSLITEcurrentScript 
+
+
+## 测试结果
+运行测试 ` totoro `
+
+```
+ chrome 26.0.1410.43 / windows 7
+  Passed all of 16 tests in 28ms (coverage 54.35%)
+
+  firefox 23.0 / windows 8
+  Passed all of 16 tests in 37ms (coverage 54.35%)
+
+  ie 10.0 / windows 7
+  Passed all of 16 tests in 60ms (coverage 54.35%)
+
+  ie 6.0 / windows XP
+  Passed all of 16 tests in 594ms (coverage 54.24%)
+
+  ie 7.0 / windows XP
+  Passed all of 16 tests in 2359ms (coverage 54.24%)
+
+  ie 8.0 / windows 7
+  Passed all of 16 tests in 437ms (coverage 54.30%)
+
+  ie 9.0 / windows 7
+  Passed all of 16 tests in 61ms (coverage 54.30%)
+```
