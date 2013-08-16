@@ -67,6 +67,38 @@ module.exports = function(grunt) {
 
     });
 
+    grunt.registerMultiTask('localtest', 'test on local totoro server', function() {
+        var done = this.async();
+        var files = this.filesSrc;
+
+        fs.stat(files[0], function(err, info) {
+            grunt.log.writeln('current size is : ' + info.size / 1024);
+            if (info.size / 1024 > 5) {
+                grunt.log.error('The minify kslite must lite then 5k.');
+                done(false);
+            } else {
+                done(true);
+            }
+        });
+
+    });
+
+    grunt.registerMultiTask('test', 'test things on remote totoro server', function() {
+        var done = this.async();
+        var files = this.filesSrc;
+
+        fs.stat(files[0], function(err, info) {
+            grunt.log.writeln('current size is : ' + info.size / 1024);
+            if (info.size / 1024 > 5) {
+                grunt.log.error('The minify kslite must lite then 5k.');
+                done(false);
+            } else {
+                done(true);
+            }
+        });
+
+    });
+
 
 
     grunt.loadNpmTasks('grunt-contrib-watch');
