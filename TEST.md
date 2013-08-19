@@ -4,10 +4,9 @@
 sudo npm install -g karma
 ```
 
-grunt会默认启动totoro-server，然后每次文件改变会
-
+修改之前运行karma
 ```
-totoro --server-host 127.0.0.1
+karma start karma.conf.js
 ```
 
 
