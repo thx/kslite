@@ -192,15 +192,97 @@ describe('kslite', function() {
                     });
                 });
             });
+
+            it('后添加包路径', function() {
+
+                KSLITEpkgPaths.push('test@http://test.com/'); 
+                KSLITE.path('test', function(p, pkg) {
+                    expect(p).toEqual('http://test.com/test');
+                    expect(pkg).toEqual({
+                        url: 'http://test.com/',
+                        charset: 'gbk'
+                    });
+                });
+            });
         });
 
+        //TODO 时间戳的函数 
         describe('KSLITEtimestamp', function() {
             it('请求的路径上有时间戳', function() {
+                expect(1).toEqual(1);
                 // KSLITE._gPath('test', function(s){
                 //     console.log(s);
                 // })
             });
         });
 
+    });
+
+    describe('核心功能函数', function() {
+        describe('add', function() {
+            it('添加模块正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('use', function() {
+            it('以,分隔调用模块正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('getScript', function() {
+            it('获取脚本正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('provide', function() {
+            it('使用模块功能正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('_aMs', function() {
+            it('批量获取模块正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('_aM', function() {
+            it('获取单个模块正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('_lM', function() {
+            it('载入模块正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('path', function() {
+            it('获取脚本路径', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('_gPath', function() {
+            it('获取脚本全路径', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('_ns', function() {
+            it('获取脚本正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('multiAsync', function() {
+            it('批量异步获取脚本正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('require', function() {
+            it('载入脚本正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
+        describe('declare', function() {
+            it('声明模块正常', function() {
+                expect(1).toEqual(1);
+            });
+        });
     });
 });

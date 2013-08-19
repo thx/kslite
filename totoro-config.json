@@ -1,4 +1,4 @@
 {
     "serverHost": "10.15.52.87",
-    "browsers": ["chrome", "safari", "firefox",  "ie/9.0", "ie/8.0", "ie/7.0", "ie/6.0"]
+    "browsers": ["chrome", "safari", "firefox", "ie/10.0",  "ie/9.0", "ie/8.0", "ie/7.0", "ie/6.0"]
 }
