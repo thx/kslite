@@ -3,13 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <title>kslite单元测试页面</title>
-    <link rel="stylesheet" href="lib/jasmine.css" />
+    <link rel="stylesheet" href="http://assets.spmjs.org/??gallery/mocha/1.9.0/mocha.css" />
 </head>
 <body>
 <div id="mocha"></div>
 
 <!-- 测试库 -->
-<script src="http://assets.spmjs.org/??jquery/jquery/1.7.2/jquery.js,totoro/jasmine/1.3.1/jasmine.js,totoro/jasmine/1.3.1/jasmine-html.js"></script>
+<script src="http://assets.spmjs.org/??
+gallery/mocha/1.9.0/mocha.js,
+jquery/jquery/1.7.2/jquery.js
+"></script>
+
+<script src="./lib/expect.js"></script>
+
+<script> mocha.setup('bdd'); </script>
 
 <!-- 配置文件 -->
 <script src="configData.js"></script>
@@ -25,30 +32,9 @@
 
 <script type="text/javascript">
 (function() {
-    var jasmineEnv = jasmine.getEnv();
-    jasmineEnv.updateInterval = 1000;
-
-    var htmlReporter = new jasmine.HtmlReporter();
-
-    jasmineEnv.addReporter(htmlReporter);
-
-    jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-    };
-
-    var currentWindowOnload = window.onload;
-
-    window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-    };
-
-    function execJasmine() {
-        jasmineEnv.execute();
-    }
-
+    mocha.checkLeaks();
+    mocha.globals(['jQuery']);
+    mocha.run();
 })();
 </script>
 </body>
