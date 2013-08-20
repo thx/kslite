@@ -151,7 +151,7 @@
         base: (win[ksCurKey].src).split("/").slice(0, -1).join("/") + "/",
         timeout: 10,
         charset: 'gbk',
-        lt_pkgs : {}, //缓存包对象
+        lt_pkgs: {}, //缓存包对象
         timestamp: win.KSLITEtimestamp || '{timestamp}' //timestamp会被替换
     };
 
@@ -684,6 +684,9 @@
                 charset: pp[2] || sconfig.charset
             };
         } else if (S.iO(s)) {
+            if( !s.charset ) {
+                s.charset = sconfig.charset;
+            }
             S.mix(sconfig.lt_pkgs, s);
         }
     }

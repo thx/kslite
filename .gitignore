@@ -8,5 +8,8 @@ alimama.iml
 build.sh
 *.jsg
 */*.jsg
+*.swp
+*.swo
 */*.swp
 */local.json
+libpeerconnection.log

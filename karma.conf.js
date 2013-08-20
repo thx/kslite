@@ -9,14 +9,17 @@ module.exports = function(config) {
 
 
         // frameworks to use
-        frameworks: ['jasmine'],
-
+        frameworks: ['mocha'],
 
         // list of files / patterns to load in the browser
         files: [
-            'tests/configData.js',
-            'dist/kslite.js',
-            'tests/**/*Spec.js'
+                { pattern: 'tests/test/*.js', included: false },
+                { pattern: 'tests/getScript/*.js', included: false },
+                'tests/lib/jquery-1.7.2.min.js',
+                'tests/lib/expect.js',
+                'tests/configData.js',
+                'dist/kslite.js',
+                'tests/**/*Spec.js'
         ],
 
 

@@ -1,0 +1,1 @@
+var getScriptCallback = 1;
