@@ -247,6 +247,10 @@ describe('kslite', function() {
 
             //清除所有的包
             KSLITE.Config.lt_pkgs = {};
+
+            //清除之前加的dom
+            jQuery('script[mod_name]').remove();
+
         });
 
         describe('getScript', function() {
@@ -413,16 +417,44 @@ describe('kslite', function() {
             it('以,分隔调用模块正常', function(done) {
                 KSLITEpkgPaths.push('test@./');
                 KSLITE.use('test-0,test-1', function( S ) {
-                    expect(1).to.be(1);
+                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
+                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
                     done();
                 });
             });
 
+
             it('以数组调用模块正常', function(done) {
                 KSLITEpkgPaths.push('test@./');
                 KSLITE.use(['test-0', 'test-1'], function( S ) {
-                    expect(1).to.be(1);
+                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
+                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
                     done();
+                });
+            });
+
+            it('多次调用同一模块不出错, 只加载一次', function(done) {
+                KSLITEpkgPaths.push('test@./');
+                var count = 0;
+                var ok = function(){
+                    count++;
+                    if( count == 2) {
+                        done();
+                    } 
+                };
+
+                KSLITE.use('test-0,test-1', function( S ) {
+                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
+                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
+                    expect(1).to.be(1);
+                    ok();
+                });
+
+                KSLITE.use('test-0,test-1', function( S ) {
+                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
+                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
+                    expect(1).to.be(1);
+                    ok();
                 });
             });
 

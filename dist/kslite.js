@@ -141,7 +141,7 @@
         timeout: 10,
         charset: 'gbk',
         lt_pkgs: {}, //缓存包对象
-        timestamp: win.KSLITEtimestamp || '20130822053455' //timestamp会被替换
+        timestamp: win.KSLITEtimestamp || '20130822080730' //timestamp会被替换
     };
 
     //暂存，方便压缩
