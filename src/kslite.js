@@ -78,22 +78,11 @@
     //脚本加载的回调函数， IE下处理readyState，需要同时处理loaded和complete两种状态
     var scriptOnload = function(node, callback) {
         var re = /^(?:loaded|complete|undefined)$/;
-        /*
-        var oldrc = node.onreadystatechange;
-        var oldload = node.onload;
-        var olderr = node.onerror;
-        */
         node.onreadystatechange = node.onload = node.onerror = function() {
             if (re.test(node.readyState)) {
-                node.onload = node.onerror = node.onreadystatechange = null;
-                //node = null;
-
                 callback();
-                /*
-                if (oldrc) oldrc();
-                if (oldload) oldload();
-                if (olderr) olderr();
-                */
+                node.onload = node.onerror = node.onreadystatechange = null;
+                node = null;
             }
         };
     };
@@ -412,28 +401,28 @@
          */
 
         //使用模块
-        //modNames:逗号分隔的模块名
-        //callback : 加载成功后的回调
+        //modNames:逗号分隔的模块名，或者数组
+        //callback(S) : 加载成功后的回调
         use: function(modNames, callback) {
-            modNames = modNames.split(',');
-            var mods = S.Env.mods;
-            S._aMs(modNames, function() {
-                if (callback) {
-                    callback(S);
-                }
-            });
-        },
+            if (S.iS(modNames)) {
+                modNames = modNames.split(',');
+            }
 
-        //批量载入模块
-        _aMs: function(modNames, callback) {
-            var i, asyncers = {};
-            for (i = 0; i < modNames.length; i++) {
+            var i = 0;
+            var asyncers = {};
+            while (modNames[i]) {
                 asyncers[modNames[i]] = {
                     f: S._aM,
                     a: modNames[i]
                 };
+                i++;
             }
-            S.multiAsync(asyncers, callback);
+
+            S.multiAsync(asyncers, function() {
+                if (callback) {
+                    callback(S);
+                }
+            });
         },
 
         //处理模块加载逻辑
@@ -460,7 +449,8 @@
             }
 
             function addRelies(mod) {
-                var i, modName, reqName, m, n; //rqmap,spmap
+                var i = 0,
+                    modName, reqName, m, n; //rqmap,spmap
 
                 function reg2Map(modName) {
                     rqmap[modName] = rqmap[modName] || {};
@@ -468,7 +458,8 @@
                     return modName;
                 }
                 modName = reg2Map(mod.name);
-                for (i = 0; i < mod.requires.length; i++) {
+
+                while (mod.requires[i]) {
                     reqName = reg2Map(mod.requires[i]);
                     rqmap[modName][reqName] = 1;
                     spmap[reqName][modName] = 1;
@@ -476,6 +467,8 @@
                         rqmap[n][reqName] = 1;
                         spmap[reqName][n] = 1;
                     }
+
+                    i++;
                 }
             }
             mod = mods[modName];
@@ -487,7 +480,7 @@
                         throw new Error("Fatal Error,Loop Reqs:" + mod.name);
                     }
                     //S.log(mod.name + " to req: " + requires);
-                    S._aMs(requires, function() {
+                    S.use(requires, function() {
                         attachMod(mod);
                     });
                 } else {
@@ -544,7 +537,7 @@
                         }
                         lo.c = true;
                         lo.fns = undefined;
-                    }, mod.charset, {
+                    }, mod.package.charset, {
                         mod_name: modName
                     });
                 });
@@ -611,7 +604,6 @@
                     });
                 })();
             }
-
         },
 
         _ns: function(names) {
@@ -632,7 +624,7 @@
 
         //声明一个模块
         declare: function() {
-            var interactiveScript, i, arg, id, depsArr, modFactory;
+            var i, arg, id, depsArr, modFactory;
             //遍历参数
             for (i = 0; i < arguments.length; i++) {
                 arg = arguments[i];
@@ -664,7 +656,7 @@
     //声明kslite模块
     S.declare("kslite", [], function(require, exports) {
         //只导出最后数组中的方法
-        exports = S.mix(exports, S, true, ["path", "log", "getScript", "substitute", "clone", "mix", "multiAsync", "extend", "iA", "iF", "iPO", "iS"]);
+        S.mix(exports, S, true, ["path", "log", "getScript", "substitute", "clone", "mix", "multiAsync", "extend", "iA", "iF", "iPO", "iS"]);
     });
 
     //使用一下, log一下已经加载完成
@@ -676,6 +668,7 @@
     //pkg
     //增加模块路径
     //模块名@模块路径@模块编码
+
     function addPath(s) {
         if (S.iS(s)) {
             var pp = s.split("@");
@@ -684,7 +677,7 @@
                 charset: pp[2] || sconfig.charset
             };
         } else if (S.iO(s)) {
-            if( !s.charset ) {
+            if (!s.charset) {
                 s.charset = sconfig.charset;
             }
             S.mix(sconfig.lt_pkgs, s);

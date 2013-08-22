@@ -67,8 +67,11 @@ KSLITE.provide(["test-program"], function(require){
 ## 开放接口
 所有方法绑定在全局变量KSLITE上
 
-### declare([module][,depenArry,] factory) 
-定义一个模块
+### add(module, factory,[depenArry]) 
+定义一个模块 
+
+### declare(module,[,depenArry,] factory) 
+定义一个模块, 规定必须有模块名， 其中三个参数可以任意顺序
 
 ### provide(module, callback) 
 使用模块
@@ -211,6 +214,8 @@ KSLITEpkgPaths.push({
 ```
 
 ### KSLITEcurrentScript 
+
+### KSLITEdebug 
 
 
 ## 测试结果
