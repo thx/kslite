@@ -32,7 +32,7 @@
 <script type="text/javascript">
 (function() {
     mocha.checkLeaks();
-    mocha.globals(['jQuery']);
+    mocha.globals(['jQuery', 'getScriptCallbackGBK','getScriptCallback', 'getScriptCallbackUTF8']);
     mocha.run();
 })();
 </script>

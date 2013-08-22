@@ -241,8 +241,16 @@ describe('kslite', function() {
                 });
             });
 
-            it('指定charset获取正确', function() {
-                expect(1).to.be(1);
+            it('指定charset后的js，获取正确', function( done ) {
+                KSLITE.getScript('./getScript/utf8.js', function() {
+                    expect(window.getScriptCallbackUTF8).to.be('我是中文');
+                    done();
+                }, 'utf8');
+
+                KSLITE.getScript('./getScript/gbk.js', function() {
+                    expect(window.getScriptCallbackGBK).to.be('我是中文');
+                    done();
+                }, 'gbk');
             });
 
             it('添加自定义属性正常', function() {
