@@ -208,10 +208,9 @@ describe('kslite', function() {
             });
 
             it('后添加包路径', function() {
-
-                KSLITEpkgPaths.push('test@http://test.com/');
-                KSLITE.path('test', function(p, pkg) {
-                    expect(p).to.be('http://test.com/test');
+                KSLITEpkgPaths.push('test123@http://test.com/');
+                KSLITE.path('test123', function(p, pkg) {
+                    expect(p).to.be('http://test.com/test123');
                     expect(pkg).to.eql({
                         url: 'http://test.com/',
                         charset: 'gbk'
@@ -233,6 +232,23 @@ describe('kslite', function() {
     });
 
     describe('核心功能函数', function() {
+
+        afterEach(function() {
+            //除了kslite模块全部清掉
+            KSLITE.Env = {
+                mods: {},
+                fns: {},
+                _loadQueue: {},
+                _relies: { //kslite add
+                    rq: {},
+                    sp: {}
+                }
+            };
+
+            //清除所有的包
+            KSLITE.Config.lt_pkgs = {};
+        });
+
         describe('getScript', function() {
             it('获取脚本正常', function(done) {
                 KSLITE.getScript('./getScript/normal.js', function() {
@@ -241,82 +257,204 @@ describe('kslite', function() {
                 });
             });
 
-            it('指定charset后的js，获取正确', function( done ) {
+            it('指定charset为utf8后的js，获取正确', function(done) {
                 KSLITE.getScript('./getScript/utf8.js', function() {
                     expect(window.getScriptCallbackUTF8).to.be('我是中文');
                     done();
                 }, 'utf8');
+            });
 
+            it('指定charset为gbk后的js，获取正确', function(done) {
                 KSLITE.getScript('./getScript/gbk.js', function() {
                     expect(window.getScriptCallbackGBK).to.be('我是中文');
                     done();
                 }, 'gbk');
             });
 
-            it('添加自定义属性正常', function() {
-                expect(1).to.be(1);
+            it('添加自定义属性正常', function(done) {
+                KSLITE.getScript('./getScript/expando.js', function() {
+                    expect(jQuery(jQuery('script').get(0)).attr('attr1')).to.be('hello');
+                    expect(jQuery(jQuery('script').get(0)).attr('attr2')).to.be('world');
+                    done();
+                }, 'gbk', {
+                    'attr1': 'hello',
+                    'attr2': 'world'
+                });
+            });
+
+            it('以对象方式调用功能正常', function(done) {
+                KSLITE.getScript('./getScript/objectArguments.js', {
+                    success: function() {
+                        expect(jQuery(jQuery('script').get(0)).attr('attr1')).to.be('hello');
+                        expect(jQuery(jQuery('script').get(0)).attr('attr2')).to.be('world');
+                        expect(window.getScriptCallbackGBK).to.be('我是中文啊啊啊');
+                        done();
+                    },
+                    charset: 'gbk',
+                    expando: {
+                        'attr1': 'hello',
+                        'attr2': 'world'
+                    }
+                });
             });
         });
 
         describe('add', function() {
             it('添加模块正常', function() {
-                expect(1).to.be(1);
+                KSLITE.add('test-a', function() {});
+                expect(KSLITE.Env.mods['test-a']).to.be.a('object');
+                expect(KSLITE.Env.mods['test-a'].fn).to.be.a('function');
+            });
+
+            it('添加模块依赖对象正常', function() {
+                KSLITE.add('test-b', function() {}, {
+                    requires: ['test-c', 'test-d']
+                });
+                expect(KSLITE.Env.mods['test-b']).to.be.a('object');
+                expect(KSLITE.Env.mods['test-b'].fn).to.be.a('function');
+                expect(KSLITE.Env.mods['test-b'].requires).to.be.a('array');
+                expect(KSLITE.Env.mods['test-b'].requires).to.contain('test-c');
+            });
+
+            it('添加模块依赖数组正常', function() {
+                KSLITE.add('test-e', function() {}, ['test-a', 'test-b']);
+                expect(KSLITE.Env.mods['test-e']).to.be.a('object');
+                expect(KSLITE.Env.mods['test-e'].fn).to.be.a('function');
+                expect(KSLITE.Env.mods['test-e'].requires).to.be.a('array');
+                expect(KSLITE.Env.mods['test-e'].requires).to.contain('test-b');
             });
         });
-        describe('use', function() {
-            it('以,分隔调用模块正常', function() {
-                expect(1).to.be(1);
+
+        describe('declare', function() {
+            it('任意顺序声明', function() {
+                KSLITE.declare('test-a', function() {}, ['test-c', 'test-b']);
+                expect(KSLITE.Env.mods['test-a']).to.be.a('object');
+                expect(KSLITE.Env.mods['test-a'].fn).to.be.a('function');
+                expect(KSLITE.Env.mods['test-a'].requires).to.be.a('array');
+                expect(KSLITE.Env.mods['test-a'].requires).to.contain('test-b');
+
+                KSLITE.declare(function() {}, 'test-e', ['test-a', 'test-b']);
+                expect(KSLITE.Env.mods['test-e']).to.be.a('object');
+                expect(KSLITE.Env.mods['test-e'].fn).to.be.a('function');
+                expect(KSLITE.Env.mods['test-e'].requires).to.be.a('array');
+                expect(KSLITE.Env.mods['test-e'].requires).to.contain('test-b');
+
+                KSLITE.declare(['test-a', 'test-b'], function() {}, 'test-f');
+                expect(KSLITE.Env.mods['test-f']).to.be.a('object');
+                expect(KSLITE.Env.mods['test-f'].fn).to.be.a('function');
+                expect(KSLITE.Env.mods['test-f'].requires).to.be.a('array');
+                expect(KSLITE.Env.mods['test-f'].requires).to.contain('test-b');
             });
         });
-        describe('provide', function() {
-            it('使用模块功能正常', function() {
-                expect(1).to.be(1);
-            });
-        });
-        describe('_aMs', function() {
-            it('批量获取模块正常', function() {
-                expect(1).to.be(1);
-            });
-        });
+
+        //TODO 
         describe('_aM', function() {
+            KSLITEpkgPaths.push('test@./');
             it('获取单个模块正常', function() {
                 expect(1).to.be(1);
             });
         });
+
+
         describe('_lM', function() {
             it('载入模块正常', function() {
                 expect(1).to.be(1);
             });
         });
+
         describe('path', function() {
-            it('获取脚本路径', function() {
-                expect(1).to.be(1);
+            it('获取脚本路径', function(done) {
+                KSLITEpkgPaths.push('test@./');
+                KSLITE.path('test-a', function(url, pkg) {
+                    expect(url).to.be('./test/a');
+                    done();
+                });
+            });
+
+            it('获取脚本路径', function(done) {
+                KSLITEpkgPaths.push('test@http://abc.com/');
+                KSLITE.path('test-a-b', function(url, pkg) {
+                    expect(url).to.be('http://abc.com/test/a/b');
+                    done();
+                });
             });
         });
+
         describe('_gPath', function() {
-            it('获取脚本全路径', function() {
-                expect(1).to.be(1);
+            it('获取脚本全路径', function(done) {
+                KSLITEpkgPaths.push('test@./');
+                var mod = {
+                    name: 'test-a-b'
+                };
+                KSLITE._gPath(mod, function() {
+                    expect(mod.fullpath).to.a('string');
+                    expect(mod.package).to.a('object');
+                    if( !KSLITE.Config.debug ) {
+                        expect(mod.fullpath).to.be('./test/a/b.js?_t=' + window.KSLITEtimestamp + '.js');
+                    }
+                    done();
+                });
             });
         });
+
         describe('_ns', function() {
             it('获取脚本正常', function() {
                 expect(1).to.be(1);
             });
         });
+
         describe('multiAsync', function() {
             it('批量异步获取脚本正常', function() {
                 expect(1).to.be(1);
             });
         });
+
+        describe('use', function() {
+            it('以,分隔调用模块正常', function(done) {
+                KSLITEpkgPaths.push('test@./');
+                KSLITE.use('test-0,test-1', function( S ) {
+                    expect(1).to.be(1);
+                    done();
+                });
+            });
+
+            it('以数组调用模块正常', function(done) {
+                KSLITEpkgPaths.push('test@./');
+                KSLITE.use(['test-0', 'test-1'], function( S ) {
+                    expect(1).to.be(1);
+                    done();
+                });
+            });
+
+            ///expect(fn).to.throwError(); // synonym of throwException
+            ///expect(fn).to.throwException(function (e) { // get the exception object
+            ///      expect(e).to.be.a(SyntaxError);
+            ///});
+            ///expect(fn).to.throwException(/matches the exception message/);
+            ///expect(fn2).to.not.throwException();
+
+            it('循环依赖要报错', function(done) {
+                KSLITEpkgPaths.push('test@./');
+                done();
+                //KSLITE.use('test-a', function(){
+                //    expect(1).to.be(1);
+                //    done();
+                //});
+            });
+        });
+
+        describe('provide', function() {
+            it('以数组形式使用模块功能正常', function() {
+                expect(1).to.be(1);
+            });
+        });
+
+
         describe('require', function() {
             it('载入脚本正常', function() {
                 expect(1).to.be(1);
             });
         });
-        describe('declare', function() {
-            it('声明模块正常', function() {
-                expect(1).to.be(1);
-            });
-        });
+
     });
 });
