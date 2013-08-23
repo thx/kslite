@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <title>kslite单元测试页面</title>
     <link rel="stylesheet" href="lib/mocha.css" />
 </head>
@@ -30,7 +31,10 @@
 
 <script type="text/javascript">
 (function() {
-    mocha.checkLeaks();
+    //这个不要加，会导致测试用例特别慢
+    if (window.__karma__) {
+        mocha.checkLeaks();
+    }
     mocha.globals(['jQuery', 'getScriptCallbackGBK','getScriptCallback', 'getScriptCallbackUTF8']);
     mocha.run();
 })();
