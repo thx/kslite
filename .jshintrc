@@ -1,10 +1,18 @@
 {
+    "asi": true,
     "scripturl": true,
     "devel": false,
     "browser": true,
-    "-W100": true, 
+    "multistr": true,
+    "unused": true,
+    "maxparams": 4,
+    "maxdepth": 5,
+    "maxstatements": 50,
+    "boss": true,
+    "-W100": true,
     "-W060": true,
     "-W054": true,
     "-W044": true,
-    "-W083": true
+    "-W083": true,
+    "-W087": true
 }

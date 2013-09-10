@@ -13,6 +13,10 @@ if (window.__karma__) {
 }
 
 describe('kslite', function() {
+    describe('基本功能', function() {
+        it('再插入后的');
+    });
+
     describe('工具函数', function() {
         describe('log', function() {
             it('不会出错就成', function() {
@@ -393,7 +397,7 @@ describe('kslite', function() {
                 KSLITE._gPath(mod, function() {
                     expect(mod.fullpath).to.a('string');
                     expect(mod.package).to.a('object');
-                    if( !KSLITE.Config.debug ) {
+                    if (!KSLITE.Config.debug) {
                         expect(mod.fullpath).to.be('./test/a/b.js?_t=' + window.KSLITEtimestamp + '.js');
                     }
                     done();
@@ -416,9 +420,9 @@ describe('kslite', function() {
         describe('use', function() {
             it('以,分隔调用模块正常', function(done) {
                 KSLITEpkgPaths.push('test@./');
-                KSLITE.use('test-0,test-1', function( S ) {
-                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
-                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
+                KSLITE.use('test-0,test-1', function(S) {
+                    expect(jQuery('script[mod_name=test-0]').length).to.be(1);
+                    expect(jQuery('script[mod_name=test-1]').length).to.be(1);
                     done();
                 });
             });
@@ -426,9 +430,9 @@ describe('kslite', function() {
 
             it('以数组调用模块正常', function(done) {
                 KSLITEpkgPaths.push('test@./');
-                KSLITE.use(['test-0', 'test-1'], function( S ) {
-                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
-                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
+                KSLITE.use(['test-0', 'test-1'], function(S) {
+                    expect(jQuery('script[mod_name=test-0]').length).to.be(1);
+                    expect(jQuery('script[mod_name=test-1]').length).to.be(1);
                     done();
                 });
             });
@@ -436,23 +440,23 @@ describe('kslite', function() {
             it('多次调用同一模块不出错, 只加载一次', function(done) {
                 KSLITEpkgPaths.push('test@./');
                 var count = 0;
-                var ok = function(){
+                var ok = function() {
                     count++;
-                    if( count == 2) {
+                    if (count == 2) {
                         done();
-                    } 
+                    }
                 };
 
-                KSLITE.use('test-0,test-1', function( S ) {
-                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
-                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
+                KSLITE.use('test-0,test-1', function(S) {
+                    expect(jQuery('script[mod_name=test-0]').length).to.be(1);
+                    expect(jQuery('script[mod_name=test-1]').length).to.be(1);
                     expect(1).to.be(1);
                     ok();
                 });
 
-                KSLITE.use('test-0,test-1', function( S ) {
-                    expect( jQuery('script[mod_name=test-0]').length ).to.be(1);
-                    expect( jQuery('script[mod_name=test-1]').length ).to.be(1);
+                KSLITE.use('test-0,test-1', function(S) {
+                    expect(jQuery('script[mod_name=test-0]').length).to.be(1);
+                    expect(jQuery('script[mod_name=test-1]').length).to.be(1);
                     expect(1).to.be(1);
                     ok();
                 });

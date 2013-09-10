@@ -69,9 +69,7 @@
 
     //定义几个模块的状态
     var INIT = 0;
-    var LOADING = 1;
     var LOADED = 2;
-    var ERROR = 3;
     var ATTACHED = 4;
     var RE_CSS = /\.css(?:\?|$)/i;
 
@@ -87,25 +85,6 @@
         };
     };
 
-
-    //获取第一个可以交互的脚本
-    //IE only
-
-    function getInteractiveScript() {
-        if (navigator.userAgent.indexOf("MSIE") < 0) {
-            return null;
-        }
-        var scripts = head[gbt]('script');
-        var script, i = 0,
-            len = scripts.length;
-        for (; i < len; i++) {
-            script = scripts[i];
-            if (script.readyState === 'interactive') {
-                return script;
-            }
-        }
-        return null;
-    }
 
     var scripts = doc[gbt]('script');
     var ksCurKey = 'KSLITEcurrentScript';
@@ -141,7 +120,7 @@
         timeout: 10,
         charset: 'gbk',
         lt_pkgs: {}, //缓存包对象
-        timestamp: win.KSLITEtimestamp || '20130822080730' //timestamp会被替换
+        timestamp: win.KSLITEtimestamp || '20130910040200' //timestamp会被替换
     };
 
     //暂存，方便压缩
@@ -450,7 +429,7 @@
 
             function addRelies(mod) {
                 var i = 0,
-                    modName, reqName, m, n; //rqmap,spmap
+                    modName, reqName, n; //rqmap,spmap
 
                 function reg2Map(modName) {
                     rqmap[modName] = rqmap[modName] || {};
@@ -527,8 +506,7 @@
                         };
                     }
                     S.getScript(mod.fullpath, function() {
-                        var i, lo = lq[modName],
-                            m;
+                        var i, lo = lq[modName];
                         if (mods[modName].status === INIT) {
                             mods[modName].status = LOADED;
                         }
@@ -573,7 +551,7 @@
         },
 
         multiAsync: function(asyncers, callback) {
-            var ctx, k, hasAsyncer = false;
+            var k, hasAsyncer = false;
 
             function isAllComplete() { //检查是否所有的异步都执行完成
                 var k, ro = {};
@@ -660,7 +638,7 @@
     });
 
     //使用一下, log一下已经加载完成
-    S.provide(["kslite"], function(require) {
+    S.provide(["kslite"], function() {
         S.require("kslite").log("kslite inited");
     });
 
